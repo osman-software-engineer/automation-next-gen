@@ -10,7 +10,7 @@ public class WebBrowserTest {
     @Test
     public void testOpenBrowser() {
         try {
-            WebBrowser app = new WebBrowserImpl();
+            WebBrowser app = new SeleniumWebDriverImpl();
             app.openBrowser();
             app.closeBrowser();
         } catch (Exception e) {
@@ -21,7 +21,7 @@ public class WebBrowserTest {
     @Test
     public void testMaximize() {
         try {
-            WebBrowser app = new WebBrowserImpl();
+            WebBrowser app = new SeleniumWebDriverImpl();
             app.openBrowser();
             app.maximize();
             app.closeBrowser();
@@ -33,7 +33,7 @@ public class WebBrowserTest {
     @Test
     public void testMinimize() {
         try {
-            WebBrowser app = new WebBrowserImpl();
+            WebBrowser app = new SeleniumWebDriverImpl();
             app.openBrowser();
             app.minimize();
             app.closeBrowser();
@@ -44,7 +44,7 @@ public class WebBrowserTest {
     @Test
     public void testOpenUrl() {
         try {
-            WebBrowser app = new WebBrowserImpl();
+            WebBrowser app = new SeleniumWebDriverImpl();
             app.openBrowser();
             app.maximize();
             app.openUrl("https://www.amazon.in/");
@@ -57,7 +57,7 @@ public class WebBrowserTest {
     @Test
     public void testRefresh() {
         try {
-            WebBrowser app = new WebBrowserImpl();
+            WebBrowser app = new SeleniumWebDriverImpl();
             app.openBrowser();
             app.maximize();
             app.openUrl("https://www.amazon.in/");
@@ -72,7 +72,7 @@ public class WebBrowserTest {
     @Test
     public void testOpenNewTab() {
         try {
-            WebBrowser app = new WebBrowserImpl();
+            WebBrowser app = new SeleniumWebDriverImpl();
             app.openBrowser();
             app.maximize();
             app.openUrl("https://www.amazon.in/");

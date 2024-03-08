@@ -1,15 +1,14 @@
 package org.osmanacademy.webbrowser;
 
-import com.epam.healenium.SelfHealingDriver;
 import org.openqa.selenium.By;
 
 public interface WebBrowser {
 
-    SelfHealingDriver openBrowser() throws Exception;
+    void openBrowser() throws Exception;
 
     void minimize();
 
-    void maximize();
+    void maximize() throws Exception;
 
     void openUrl(String url) throws Exception;
 
@@ -17,12 +16,11 @@ public interface WebBrowser {
 
     void openNewTab();
 
-    boolean switchToTabWithTitle(String title) throws Exception;
+    void switchToTabWithTitle(String title) throws Exception;
 
     void goBack();
 
     void goForward();
-
 
     void click(By locator) throws Exception;
 
@@ -30,8 +28,7 @@ public interface WebBrowser {
 
     void selectDropDown(By locator);
 
-    String getText(By locator);
-
     void closeBrowser();
+
 
 }
