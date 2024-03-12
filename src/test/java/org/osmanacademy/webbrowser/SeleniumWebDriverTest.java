@@ -1,11 +1,14 @@
 package org.osmanacademy.webbrowser;
 
 
+import org.openqa.selenium.By;
 import org.testng.annotations.Test;
 
 import static org.testng.Assert.fail;
 
-public class WebBrowserTest {
+public class SeleniumWebDriverTest {
+
+    public static final String WEBSITE_URL = "https://www.google.com/";
 
     @Test
     public void testOpenBrowser() {
@@ -47,7 +50,7 @@ public class WebBrowserTest {
             WebBrowser app = new SeleniumWebDriverImpl();
             app.openBrowser();
             app.maximize();
-            app.openUrl("https://www.amazon.in/");
+            app.openUrl(WEBSITE_URL);
             app.closeBrowser();
         } catch (Exception e) {
             fail("Exception was thrown during the testOpenUrl method execution: " + e.getMessage());
@@ -60,7 +63,7 @@ public class WebBrowserTest {
             WebBrowser app = new SeleniumWebDriverImpl();
             app.openBrowser();
             app.maximize();
-            app.openUrl("https://www.amazon.in/");
+            app.openUrl(WEBSITE_URL);
             app.maximize();
             app.refresh();
             app.closeBrowser();
@@ -75,9 +78,10 @@ public class WebBrowserTest {
             WebBrowser app = new SeleniumWebDriverImpl();
             app.openBrowser();
             app.maximize();
-            app.openUrl("https://www.amazon.in/");
+            app.openUrl(WEBSITE_URL);
             app.openNewTab();
             app.switchToTabWithTitle("New Tab");
+            app.closeBrowser();
         } catch (Exception e) {
             fail("Exception was thrown during the testOpenNewTab method execution: " + e.getMessage());
         }
@@ -86,23 +90,55 @@ public class WebBrowserTest {
     @Test
     public void testSwitchToTabWithTitle() {
         try {
-
+            WebBrowser app = new SeleniumWebDriverImpl();
+            app.openBrowser();
+            app.maximize();
+            app.openUrl(WEBSITE_URL);
+            app.openNewTab();
+            app.switchToTabWithTitle("New Tab");
+            app.closeBrowser();
         } catch (Exception e) {
             fail("Exception was thrown during the testSwitchToTabWithTitle method execution: " + e.getMessage());
         }
     }
 
     @Test
-    public void testGoBack() {
+    public void testGoBack() throws Exception {
+        try {
+        WebBrowser app = new SeleniumWebDriverImpl();
+        app.openBrowser();
+        app.maximize();
+        app.openUrl(WEBSITE_URL);
+        app.goBack();
+        app.closeBrowser();
+        } catch (Exception e) {
+            fail("Exception was thrown during the testGoBack method execution: " + e.getMessage());
+        }
     }
 
     @Test
-    public void testGoForward() {
+    public void testGoForward() throws Exception {
+        try {
+            WebBrowser app = new SeleniumWebDriverImpl();
+            app.openBrowser();
+            app.maximize();
+            app.openUrl(WEBSITE_URL);
+            app.goForward();
+            app.closeBrowser();
+        } catch (Exception e) {
+            fail("Exception was thrown during the testGoForward method execution: " + e.getMessage());
+        }
     }
 
 
     @Test
-    public void testClick() {
+    public void testClick() throws Exception {
+        WebBrowser app = new SeleniumWebDriverImpl();
+        app.openBrowser();
+        app.maximize();
+        app.openUrl(WEBSITE_URL);
+        app.click(By.xpath("//a[contains(text(), 'About')]"));
+        app.closeBrowser();
     }
 
     @Test

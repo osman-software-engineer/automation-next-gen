@@ -6,6 +6,7 @@ import org.openqa.selenium.chrome.ChromeOptions;
 import org.openqa.selenium.edge.EdgeDriver;
 import org.openqa.selenium.firefox.FirefoxDriver;
 import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.openqa.selenium.support.ui.Select;
 import org.openqa.selenium.support.ui.WebDriverWait;
 import org.osmanacademy.common.PropertiesFileLoader;
 import org.slf4j.Logger;
@@ -36,8 +37,12 @@ public class SeleniumWebDriverImpl implements WebBrowser {
                 case "firefox":
                     this.driver = new FirefoxDriver();
                     break;
-                default:
+                case "chrome":
                     openChromeDriver();
+                    break;
+                default:
+                    throw new IllegalArgumentException("Invalid browser name: '" + name
+                            + "'. Supported names are: 'chrome', 'firefox', 'edge'.");
             }
             logger.info("Browser is open: {}", name);
         } catch (Exception e) {
@@ -46,7 +51,7 @@ public class SeleniumWebDriverImpl implements WebBrowser {
         }
     }
 
-    public void openChromeDriver() throws Exception {
+    private void openChromeDriver() throws Exception {
         try {
             ChromeOptions options = new ChromeOptions();
             if (webProperProperties.getProperty("start.maximized").equals("true")) {
@@ -129,17 +134,48 @@ public class SeleniumWebDriverImpl implements WebBrowser {
 
     @Override
     public void click(By locator) throws Exception {
-        isElementClickable(locator);
+        try {
+            isElementClickable(locator);
+            isElementVisible(locator);
+            isElementEnabled(locator);
+            this.driver.findElement(locator).click();
+        } catch (Exception e) {
+            throw new Exception(e);
+        }
     }
 
     @Override
-    public void type(By locator) {
-
+    public void type(By locator, String data) throws Exception {
+        try {
+            WebDriverWait wait = new WebDriverWait(this.driver, WAIT_TIMEOUT);
+            wait.until(ExpectedConditions.visibilityOfElementLocated(locator));
+            this.driver.findElement(locator).clear();
+            this.driver.findElement(locator).sendKeys(data);
+        } catch (Exception e) {
+            throw new Exception(e);
+        }
     }
 
     @Override
-    public void selectDropDown(By locator) {
-
+    public void selectDropDown(By locator, SelectAction action, String data) throws Exception {
+        try {
+            WebDriverWait wait = new WebDriverWait(this.driver, WAIT_TIMEOUT);
+            wait.until(ExpectedConditions.visibilityOfElementLocated(locator));
+            Select select = new Select(this.driver.findElement(locator));
+            switch(action){
+                case BY_INDEX:
+                    select.selectByIndex(Integer.parseInt(data));
+                    break;
+                case BY_VISIBLE_TEXT:
+                    select.selectByVisibleText(data);
+                    break;
+                case BY_VALUE:
+                    select.selectByValue(data);
+                    break;
+            }
+        } catch (Exception e) {
+            throw new Exception(e);
+        }
     }
 
     @Override
@@ -158,7 +194,12 @@ public class SeleniumWebDriverImpl implements WebBrowser {
 
 
     private void isElementVisible(By locator) {
-
+        try {
+            WebDriverWait wait = new WebDriverWait(this.driver, WAIT_TIMEOUT);
+            wait.until(ExpectedConditions.visibilityOfElementLocated(locator));
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
     }
 
     private void isElementClickable(By locator) throws Exception {
@@ -177,11 +218,12 @@ public class SeleniumWebDriverImpl implements WebBrowser {
 
 
     private void isElementSelected(By locator) {
-
+        this.driver.findElement(locator).isSelected();
     }
 
 
     private void isElementEnabled(By locator) {
+        this.driver.findElement(locator).isEnabled();
 
     }
 

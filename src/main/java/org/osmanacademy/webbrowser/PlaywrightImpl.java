@@ -2,7 +2,6 @@ package org.osmanacademy.webbrowser;
 
 import com.microsoft.playwright.Browser;
 import com.microsoft.playwright.BrowserType;
-import com.microsoft.playwright.Page;
 import com.microsoft.playwright.Playwright;
 import org.openqa.selenium.*;
 import org.osmanacademy.common.PropertiesFileLoader;
@@ -91,12 +90,12 @@ public class PlaywrightImpl implements WebBrowser {
     }
 
     @Override
-    public void type(By locator) {
+    public void type(By locator,String data) {
 
     }
 
     @Override
-    public void selectDropDown(By locator) {
+    public void selectDropDown(By locator, SelectAction action, String data) throws Exception {
 
     }
 
