@@ -13,7 +13,7 @@ public class SeleniumWebDriverTest {
     @Test
     public void testOpenBrowser() {
         try {
-            WebBrowser app = new SeleniumWebDriverImpl();
+            WebBrowserAutomation app = new SeleniumWebDriverImpl();
             app.openBrowser();
             app.closeBrowser();
         } catch (Exception e) {
@@ -24,7 +24,7 @@ public class SeleniumWebDriverTest {
     @Test
     public void testMaximize() {
         try {
-            WebBrowser app = new SeleniumWebDriverImpl();
+            WebBrowserAutomation app = new SeleniumWebDriverImpl();
             app.openBrowser();
             app.maximize();
             app.closeBrowser();
@@ -36,7 +36,7 @@ public class SeleniumWebDriverTest {
     @Test
     public void testMinimize() {
         try {
-            WebBrowser app = new SeleniumWebDriverImpl();
+            WebBrowserAutomation app = new SeleniumWebDriverImpl();
             app.openBrowser();
             app.minimize();
             app.closeBrowser();
@@ -47,7 +47,7 @@ public class SeleniumWebDriverTest {
     @Test
     public void testOpenUrl() {
         try {
-            WebBrowser app = new SeleniumWebDriverImpl();
+            WebBrowserAutomation app = new SeleniumWebDriverImpl();
             app.openBrowser();
             app.maximize();
             app.openUrl(WEBSITE_URL);
@@ -60,7 +60,7 @@ public class SeleniumWebDriverTest {
     @Test
     public void testRefresh() {
         try {
-            WebBrowser app = new SeleniumWebDriverImpl();
+            WebBrowserAutomation app = new SeleniumWebDriverImpl();
             app.openBrowser();
             app.maximize();
             app.openUrl(WEBSITE_URL);
@@ -75,7 +75,7 @@ public class SeleniumWebDriverTest {
     @Test
     public void testOpenNewTab() {
         try {
-            WebBrowser app = new SeleniumWebDriverImpl();
+            WebBrowserAutomation app = new SeleniumWebDriverImpl();
             app.openBrowser();
             app.maximize();
             app.openUrl(WEBSITE_URL);
@@ -90,7 +90,7 @@ public class SeleniumWebDriverTest {
     @Test
     public void testSwitchToTabWithTitle() {
         try {
-            WebBrowser app = new SeleniumWebDriverImpl();
+            WebBrowserAutomation app = new SeleniumWebDriverImpl();
             app.openBrowser();
             app.maximize();
             app.openUrl(WEBSITE_URL);
@@ -105,7 +105,7 @@ public class SeleniumWebDriverTest {
     @Test
     public void testGoBack() throws Exception {
         try {
-        WebBrowser app = new SeleniumWebDriverImpl();
+        WebBrowserAutomation app = new SeleniumWebDriverImpl();
         app.openBrowser();
         app.maximize();
         app.openUrl(WEBSITE_URL);
@@ -119,7 +119,7 @@ public class SeleniumWebDriverTest {
     @Test
     public void testGoForward() throws Exception {
         try {
-            WebBrowser app = new SeleniumWebDriverImpl();
+            WebBrowserAutomation app = new SeleniumWebDriverImpl();
             app.openBrowser();
             app.maximize();
             app.openUrl(WEBSITE_URL);
@@ -133,7 +133,7 @@ public class SeleniumWebDriverTest {
 
     @Test
     public void testClick() throws Exception {
-        WebBrowser app = new SeleniumWebDriverImpl();
+        WebBrowserAutomation app = new SeleniumWebDriverImpl();
         app.openBrowser();
         app.maximize();
         app.openUrl(WEBSITE_URL);

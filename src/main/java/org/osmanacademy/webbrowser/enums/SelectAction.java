@@ -1,4 +1,4 @@
-package org.osmanacademy.webbrowser;
+package org.osmanacademy.webbrowser.enums;
 
 public enum SelectAction {
     BY_INDEX,
