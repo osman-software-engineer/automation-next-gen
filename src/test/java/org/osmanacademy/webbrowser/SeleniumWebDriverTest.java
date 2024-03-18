@@ -2,6 +2,7 @@ package org.osmanacademy.webbrowser;
 
 
 import org.openqa.selenium.By;
+import org.osmanacademy.webbrowser.impl.SeleniumWebDriverImpl;
 import org.testng.annotations.Test;
 
 import static org.testng.Assert.fail;
