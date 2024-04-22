@@ -1,9 +1,10 @@
-package org.osmanacademy.webbrowser.utils;
+package org.osmanacademy.webbrowser.managers;
 
 import org.apache.commons.lang3.StringUtils;
 import org.openqa.selenium.chrome.ChromeOptions;
 import org.osmanacademy.webbrowser.config.AppConfig;
 
+import org.osmanacademy.webbrowser.enums.ChromeOptionsArgs;
 import org.osmanacademy.webbrowser.enums.EmulatedDevice;
 import org.osmanacademy.webbrowser.enums.PropertyKeys;
 
@@ -17,9 +18,9 @@ public class ChromeOptionsManager {
     private final AppConfig webBrowserProperties;
     public static final String TRUE = "true";
 
-    public ChromeOptionsManager() {
+    public ChromeOptionsManager(String propertyFileName) {
         this.options = new ChromeOptions();
-        this.webBrowserProperties = new AppConfig("webbrowser.properties");
+        this.webBrowserProperties = new AppConfig(propertyFileName);
     }
     public void setOptions(ChromeOptionsArgs chromeOptionArgs) {
         this.options.addArguments(chromeOptionArgs.getArgs());

@@ -6,8 +6,12 @@
     <groupId>org.osmanacademy</groupId>
     <artifactId>automation-next-gen</artifactId>
     <version>1.0-SNAPSHOT</version>
-    <name>AutomationNextGen</name>
     <packaging>jar</packaging>
+    <name>AutomationNextGen</name>
+    <url>https://github.com/osman-software-engineer/automation-next-gen/wiki</url>
+    <description>
+        A Java project designed to automate repetitive manual processes on computers mostly related Software Development Life Cycle.
+    </description>
     <properties>
         <maven.compiler.source>18</maven.compiler.source>
         <maven.compiler.target>18</maven.compiler.target>
@@ -19,19 +23,25 @@
         <logback.core.version>1.5.3</logback.core.version>
         <logback.classic.version>1.5.3</logback.classic.version>
         <playwright.version>1.41.2</playwright.version>
+        <commons-lang3.version>3.14.0</commons-lang3.version>
+        <poi.version>5.0.0</poi.version>
+        <jackson.version>2.10.0</jackson.version>
+        <kernel.version>7.0.4</kernel.version>
+        <io.version>7.0.4</io.version>
+        <layout.version>7.0.4</layout.version>
+        <forms.version>7.0.4</forms.version>
+        <pdfa.version>7.0.4</pdfa.version>
+        <pdftest.version>7.0.4</pdftest.version>
+        <allure.version>2.24.0</allure.version>
+        <aspectj.version>1.9.20.1</aspectj.version>
+        <javafaker.version>1.0.2</javafaker.version>
+        <jfairy.version>0.3.0</jfairy.version>
         <!-- Dependencies Version End Above-->
+        <guava.version>33.1.0-jre</guava.version>
     </properties>
     <dependencies>
-        <dependency>
-            <groupId>org.seleniumhq.selenium</groupId>
-            <artifactId>selenium-java</artifactId>
-            <version>${selenium.java.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>org.testng</groupId>
-            <artifactId>testng</artifactId>
-            <version>${testng.version}</version>
-        </dependency>
+        <!-- Dependencies Declaration Starts Here-->
+        <!-- Logging Api's -->
         <dependency>
             <groupId>org.slf4j</groupId>
             <artifactId>slf4j-api</artifactId>
@@ -47,10 +57,130 @@
             <artifactId>logback-classic</artifactId>
             <version>${logback.classic.version}</version>
         </dependency>
+        <!-- General Purpose Api's -->
+        <dependency>
+            <groupId>org.apache.commons</groupId>
+            <artifactId>commons-lang3</artifactId>
+            <version>${commons-lang3.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>com.google.guava</groupId>
+            <artifactId>guava</artifactId>
+            <version>${guava.version}</version>
+        </dependency>
+        <!--Excel Parsing Libraries -->
+        <dependency>
+            <groupId>org.apache.poi</groupId>
+            <artifactId>poi</artifactId>
+            <version>${poi.version}</version>
+        </dependency>
+        <!--JSON Parsing Api's -->
+        <dependency>
+            <groupId>com.fasterxml.jackson.core</groupId>
+            <artifactId>jackson-core</artifactId>
+            <version>${jackson.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>com.fasterxml.jackson.core</groupId>
+            <artifactId>jackson-databind</artifactId>
+            <version>${jackson.version}</version>
+        </dependency>
+        <!-- Xml Parsing Api's -->
+        <dependency>
+            <groupId>xerces</groupId>
+            <artifactId>xercesImpl</artifactId>
+            <version>2.11.0</version>
+        </dependency>
+        <!--PDF Parsing Api's -->
+        <dependency>
+            <groupId>com.itextpdf</groupId>
+            <artifactId>kernel</artifactId>
+            <version>${kernel.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>com.itextpdf</groupId>
+            <artifactId>io</artifactId>
+            <version>${io.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>com.itextpdf</groupId>
+            <artifactId>layout</artifactId>
+            <version>${layout.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>com.itextpdf</groupId>
+            <artifactId>forms</artifactId>
+            <version>${forms.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>com.itextpdf</groupId>
+            <artifactId>pdfa</artifactId>
+            <version>${pdfa.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>com.itextpdf</groupId>
+            <artifactId>pdftest</artifactId>
+            <version>${pdftest.version}</version>
+        </dependency>
+        <!--HTML Parsing Api's -->
+        <dependency>
+            <groupId>org.jsoup</groupId>
+            <artifactId>jsoup</artifactId>
+            <version>1.12.1</version>
+        </dependency>
+        <!--Unit Testing Api's -->
+        <dependency>
+            <groupId>org.testng</groupId>
+            <artifactId>testng</artifactId>
+            <version>${testng.version}</version>
+        </dependency>
+        <!-- Browser Automation Api's -->
+        <dependency>
+            <groupId>org.seleniumhq.selenium</groupId>
+            <artifactId>selenium-java</artifactId>
+            <version>${selenium.java.version}</version>
+        </dependency>
         <dependency>
             <groupId>com.microsoft.playwright</groupId>
             <artifactId>playwright</artifactId>
             <version>${playwright.version}</version>
         </dependency>
+        <!--Sending Mail Api -->
+        <dependency>
+            <groupId>org.simplejavamail</groupId>
+            <artifactId>simple-java-mail</artifactId>
+            <version>5.3.0</version>
+        </dependency>
+        <!--Zip|UnZip File -->
+        <dependency>
+            <groupId>net.lingala.zip4j</groupId>
+            <artifactId>zip4j</artifactId>
+            <version>2.5.2</version>
+        </dependency>
+        <!-- Random Test Data Api's -->
+        <dependency>
+            <groupId>io.codearte.jfairy</groupId>
+            <artifactId>jfairy</artifactId>
+            <version>0.5.9</version>
+        </dependency>
+        <!-- Accessibility Automation -->
+        <dependency>
+            <groupId>com.deque</groupId>
+            <artifactId>axe-selenium</artifactId>
+            <version>3.0</version>
+            <scope>test</scope>
+        </dependency>
+        <!-- Random Test Data Generator Api's -->
+        <dependency>
+            <groupId>com.github.javafaker</groupId>
+            <artifactId>javafaker</artifactId>
+            <version>${javafaker.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.jfairy</groupId>
+            <artifactId>jfairy</artifactId>
+            <version>${jfairy.version}</version>
+        </dependency>
+        <!-- Dependencies Declaration Ends Here-->
     </dependencies>
 </project>

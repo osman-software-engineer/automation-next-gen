@@ -14,7 +14,6 @@ public class PropertiesFileLoader {
 
     private Properties loadProperties(String propertiesFileName) {
         Properties properties = new Properties();
-
         try (InputStream input = getClass().getClassLoader().getResourceAsStream(propertiesFileName)) {
             if (input == null) {
                 throw new IllegalArgumentException("Properties file " + propertiesFileName + " not found");
@@ -23,11 +22,13 @@ public class PropertiesFileLoader {
         } catch (IOException io) {
             throw new RuntimeException("Could not load properties from " + propertiesFileName, io);
         }
-
         return properties;
     }
 
     public String getProperty(String key) {
         return this.properties.getProperty(key);
+    }
+    public Properties getProperties() {
+        return properties;
     }
 }
