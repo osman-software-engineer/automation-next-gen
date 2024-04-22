@@ -36,8 +36,9 @@
         <aspectj.version>1.9.20.1</aspectj.version>
         <javafaker.version>1.0.2</javafaker.version>
         <jfairy.version>0.3.0</jfairy.version>
-        <!-- Dependencies Version End Above-->
         <guava.version>33.1.0-jre</guava.version>
+        <commons-lang3.version>3.14.0</commons-lang3.version>
+        <!-- Dependencies Version End Above-->
     </properties>
     <dependencies>
         <!-- Dependencies Declaration Starts Here-->
