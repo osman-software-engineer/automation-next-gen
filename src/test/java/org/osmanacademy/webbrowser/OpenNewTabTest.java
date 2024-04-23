@@ -12,27 +12,27 @@ import static org.testng.Assert.fail;
 public class OpenNewTabTest extends BaseTest {
     @BeforeTest
     public void beforeTest() {
-        setApp(new SeleniumWebDriverImpl("web-browser-automation.properties"));
+        setWebBrowser(new SeleniumWebDriverImpl("web-browser-automation.properties"));
         setWebSiteUrl("https://www.google.com/");
         setSoftAssert(new SoftAssert());
     }
     @Test
     public void testRefresh() {
         try {
-            setApp(new SeleniumWebDriverImpl("web-browser-automation.properties"));
-            getApp().openBrowser();
-            getApp().maximize();
-            getApp().openUrl(getWebSiteUrl());
-            getApp().maximize();
-            getApp().refresh();
-            getApp().closeBrowser();
+            setWebBrowser(new SeleniumWebDriverImpl("web-browser-automation.properties"));
+            getWebBrowser().openWebBrowser();
+            getWebBrowser().maximize();
+            getWebBrowser().openUrl(getWebSiteUrl());
+            getWebBrowser().maximize();
+            getWebBrowser().refresh();
+            getWebBrowser().closeBrowser();
         } catch (Exception e) {
             fail("Exception was thrown during the testRefresh method execution: " + e.getMessage());
         }
     }
     @AfterTest
     public void afterTest() throws WebBrowserAutomationException {
-        getApp().closeBrowser();
+        getWebBrowser().closeBrowser();
     }
 
 }

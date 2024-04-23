@@ -12,17 +12,17 @@ import org.testng.asserts.SoftAssert;
 public class testStandardUserLogin extends BaseTest {
     @BeforeTest
     public void beforeTest() {
-        setApp(new SeleniumWebDriverImpl("web-browser-automation.properties"));
+        setWebBrowser(new SeleniumWebDriverImpl("web-browser-automation.properties"));
         setWebSiteUrl("https://www.saucedemo.com/");
         setSoftAssert(new SoftAssert());
     }
     @Test
     public void testStandardUserLogin() throws Exception {
         try {
-            getApp().openBrowser();
-            getApp().maximize();
-            getApp().openUrl(getWebSiteUrl());
-            LoginPageAction loginPageAction = new LoginPageAction(getApp());
+            getWebBrowser().openWebBrowser();
+            getWebBrowser().maximize();
+            getWebBrowser().openUrl(getWebSiteUrl());
+            LoginPageAction loginPageAction = new LoginPageAction(getWebBrowser());
             loginPageAction.performLogin("standard_user","secret_sauce");
         } catch (WebBrowserAutomationException e) {
             throw new RuntimeException(e);
@@ -30,6 +30,6 @@ public class testStandardUserLogin extends BaseTest {
     }
     @AfterTest
     public void afterTest() throws WebBrowserAutomationException {
-        getApp().closeBrowser();
+        getWebBrowser().closeBrowser();
     }
 }

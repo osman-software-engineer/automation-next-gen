@@ -9,7 +9,7 @@ import org.testng.asserts.SoftAssert;
  */
 public class BaseTest {
 
-    private WebBrowserAutomation app;
+    private WebBrowserAutomation webBrowser;
 
     private SoftAssert softAssert;
 
@@ -27,12 +27,12 @@ public class BaseTest {
         // Place your code here
     }
 
-    public WebBrowserAutomation getApp() {
-        return app;
+    public WebBrowserAutomation getWebBrowser() {
+        return webBrowser;
     }
 
-    public void setApp(WebBrowserAutomation app) {
-        this.app = app;
+    public void setWebBrowser(WebBrowserAutomation webBrowser) {
+        this.webBrowser = webBrowser;
     }
     public String getWebSiteUrl() {
         return webSiteUrl;

@@ -24,7 +24,6 @@ public class WaitManager {
     private WebDriverWait waitExplicit;
     private FluentWait<WebDriver> waitFluent;
     private WebElement webElement;
-
     private WebElementManager webElementManager;
 
     public WaitManager(WebDriver driver) {

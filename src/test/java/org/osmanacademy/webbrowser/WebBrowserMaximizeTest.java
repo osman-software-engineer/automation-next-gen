@@ -12,23 +12,23 @@ import static org.testng.Assert.fail;
 public class WebBrowserMaximizeTest extends BaseTest {
     @BeforeTest
     public void beforeTest() {
-        setApp(new SeleniumWebDriverImpl("web-browser-automation.properties"));
+        setWebBrowser(new SeleniumWebDriverImpl("web-browser-automation.properties"));
         setWebSiteUrl("https://www.google.com/");
         setSoftAssert(new SoftAssert());
     }
     @Test
     public void testMaximize() {
         try {
-            setApp(new SeleniumWebDriverImpl("web-browser-automation.properties"));
-            getApp().openBrowser();
-            getApp().maximize();
-            getApp().closeBrowser();
+            setWebBrowser(new SeleniumWebDriverImpl("web-browser-automation.properties"));
+            getWebBrowser().openWebBrowser();
+            getWebBrowser().maximize();
+            getWebBrowser().closeBrowser();
         } catch (Exception e) {
             fail("Exception was thrown during the testMaximize method execution: " + e.getMessage());
         }
     }
     @AfterTest
     public void afterTest() throws WebBrowserAutomationException {
-        getApp().closeBrowser();
+        getWebBrowser().closeBrowser();
     }
 }

@@ -1,5 +1,6 @@
 package org.osmanacademy.webbrowser.impl;
 
+import org.apache.commons.lang3.ObjectUtils;
 import org.openqa.selenium.By;
 import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebDriver;
@@ -15,6 +16,7 @@ import org.osmanacademy.webbrowser.enums.ExpectedWaitCondition;
 import org.osmanacademy.webbrowser.enums.SelectAction;
 import org.osmanacademy.webbrowser.exceptions.WebBrowserAutomationException;
 import org.osmanacademy.webbrowser.managers.DriverInstanceManager;
+import org.osmanacademy.webbrowser.managers.DriverUserActionsManager;
 import org.osmanacademy.webbrowser.managers.WaitManager;
 import org.osmanacademy.webbrowser.managers.WebElementManager;
 import org.slf4j.Logger;
@@ -24,41 +26,42 @@ import java.time.Duration;
 import java.util.List;
 
 public class SeleniumWebDriverImpl implements WebBrowserAutomation {
-    public String propertyFileName;
+    private String propertyFileName;
     private Logger logger = LoggerFactory.getLogger(SeleniumWebDriverImpl.class);
-    private Duration WAIT_TIMEOUT = Duration.ofSeconds(10);
+    private Duration waitTimeoutSeconds = Duration.ofSeconds(10);
     private WebDriver driver;
     private AppConfig webBrowserProperties;
     private WaitManager waitManager;
-    private DriverInstanceManager driverManager;
+    private DriverInstanceManager driverInstanceManager;
     private WebElementManager webElementManager;
+    private DriverUserActionsManager driverUserActionsManager;
+
 
     public SeleniumWebDriverImpl(String propertyFileName) {
         setPropertyFileName(propertyFileName);
         setWebBrowserProperties(new AppConfig(propertyFileName));
-        setDriverManager(new DriverInstanceManager());
+        setDriverInstanceManager(new DriverInstanceManager());
     }
 
     @Override
-    public WebDriver openBrowser() throws WebBrowserAutomationException {
+    public void openWebBrowser() throws WebBrowserAutomationException {
         try {
             String browserName = getWebBrowserProperties().getProperty("web.browser.name");
             switch (browserName) {
                 case "chrome":
-                    getDriverManager().openChromeDriver(getPropertyFileName());
+                    getDriverInstanceManager().openChromeDriver(getPropertyFileName());
                     break;
                 case "edge":
-                    getDriverManager().openEdgeBrowser(getPropertyFileName());
+                    getDriverInstanceManager().openEdgeBrowser(getPropertyFileName());
                     break;
                 case "firefox":
-                    getDriverManager().openFirefoxDriver(getPropertyFileName());
+                    getDriverInstanceManager().openFirefoxDriver(getPropertyFileName());
                     break;
                 default:
                     throw new IllegalArgumentException("Invalid browser browserName: '" + browserName + "'. Supported names are: 'chrome', 'firefox', 'edge'.");
             }
             logger.info("Browser is open: {}", browserName);
-            setDriver(getDriverManager().getDriver());
-            return getDriver();
+            setDriver(getDriverInstanceManager().getDriver());
         } catch (WebBrowserAutomationException e) {
             logger.error("Exception occurred when opening the browser", e);
             throw e;
@@ -67,7 +70,7 @@ public class SeleniumWebDriverImpl implements WebBrowserAutomation {
 
     @Override
     public void minimize() throws WebBrowserAutomationException {
-        if (getDriver() == null){
+        if (ObjectUtils.isEmpty(getDriver())){
             throw new WebBrowserAutomationException("Web Browser is not open");
         }
         getDriver().manage().window().minimize();
@@ -75,7 +78,7 @@ public class SeleniumWebDriverImpl implements WebBrowserAutomation {
 
     @Override
     public void maximize() throws WebBrowserAutomationException {
-        if (getDriver() == null){
+        if (ObjectUtils.isEmpty(getDriver())){
             throw new WebBrowserAutomationException("Web Browser is not open");
         }
         getDriver().manage().window().maximize();
@@ -88,7 +91,7 @@ public class SeleniumWebDriverImpl implements WebBrowserAutomation {
      */
     @Override
     public SessionId getSessionID() throws WebBrowserAutomationException {
-        if (getDriver() == null){
+        if (ObjectUtils.isEmpty(getDriver())){
             throw new WebBrowserAutomationException("Web Browser is not open");
         }
         return ((RemoteWebDriver) getDriver()).getSessionId();
@@ -96,7 +99,7 @@ public class SeleniumWebDriverImpl implements WebBrowserAutomation {
 
     @Override
     public void refresh() throws WebBrowserAutomationException {
-        if (getDriver() == null){
+        if (ObjectUtils.isEmpty(getDriver())){
             throw new WebBrowserAutomationException("Web Browser is not open");
         }
         getDriver().navigate().refresh();
@@ -104,7 +107,7 @@ public class SeleniumWebDriverImpl implements WebBrowserAutomation {
 
     @Override
     public void openNewTab() throws WebBrowserAutomationException {
-        if (getDriver() == null){
+        if (ObjectUtils.isEmpty(getDriver())){
             throw new WebBrowserAutomationException("Web Browser is not open");
         }
         JavascriptExecutor jse = (JavascriptExecutor) getDriver();
@@ -113,7 +116,7 @@ public class SeleniumWebDriverImpl implements WebBrowserAutomation {
 
     @Override
     public void switchToTabWithTitle(String title) throws WebBrowserAutomationException {
-        if (getDriver() == null){
+        if (ObjectUtils.isEmpty(getDriver())){
             throw new WebBrowserAutomationException("Web Browser is not open");
         }
         try {
@@ -140,12 +143,18 @@ public class SeleniumWebDriverImpl implements WebBrowserAutomation {
     }
 
     @Override
-    public void goBack() {
+    public void goBack() throws WebBrowserAutomationException {
+        if (ObjectUtils.isEmpty(getDriver())){
+            throw new WebBrowserAutomationException("Web Browser is not open");
+        }
         getDriver().navigate().back();
     }
 
     @Override
-    public void goToUrl(String url) throws Exception {
+    public void goToUrl(String url) throws WebBrowserAutomationException {
+        if (ObjectUtils.isEmpty(getDriver())){
+            throw new WebBrowserAutomationException("Web Browser is not open");
+        }
         try {
             getDriver().navigate().to(url);
         } catch (Exception e) {
@@ -155,6 +164,9 @@ public class SeleniumWebDriverImpl implements WebBrowserAutomation {
 
     @Override
     public void goForward() throws WebBrowserAutomationException {
+        if (ObjectUtils.isEmpty(getDriver())){
+            throw new WebBrowserAutomationException("Web Browser is not open");
+        }
         try {
             getDriver().navigate().forward();
         } catch (Exception e) {
@@ -163,34 +175,25 @@ public class SeleniumWebDriverImpl implements WebBrowserAutomation {
     }
 
     @Override
-    public void click(By locator) {
+    public void click(By locator) throws WebBrowserAutomationException {
+        if (ObjectUtils.isEmpty(getDriver())){
+            throw new WebBrowserAutomationException("Web Browser is not open");
+        }
         isElementClickable(locator);
         getDriver().findElement(locator).click();
     }
-
-    @Override
-    public void click(WebElement webElement) {
-        isElementClickable(webElement);
-        webElement.click();
-    }
-
     @Override
     public void type(By locator, String data) throws WebBrowserAutomationException {
-        if (getDriver() == null) {
-            throw new WebBrowserAutomationException("Initialize Web Browser before calling this method");
+        if (ObjectUtils.isEmpty(getDriver())) {
+            throw new WebBrowserAutomationException("Web Browser is not open.");
         }
-        setWaitManager(new WaitManager(getDriver()));
-        getWaitManager().waitFluent(locator, ExpectedWaitCondition.PRESENCE);
-        getWaitManager().waitFluent(locator, ExpectedWaitCondition.VISIBILE);
-        setWebElementManager(new WebElementManager(getDriver()));
-        getWebElementManager().getWebElementFromDOM(locator);
-        getWebElementManager().getWebElementFromMemory().clear();
-        getWebElementManager().getWebElementFromMemory().sendKeys(data);
+        setDriverUserActionsManager(new DriverUserActionsManager(getDriver()));
+        getDriverUserActionsManager().type(locator,data);
     }
 
     @Override
     public void type(WebElement webElement, String data) throws WebBrowserAutomationException {
-        if (getDriver() == null) {
+        if (ObjectUtils.isEmpty(getDriver())) {
             throw new WebBrowserAutomationException("Initialize Web Browser before calling this method");
         }
         setWaitManager(new WaitManager(getDriver()));
@@ -202,10 +205,10 @@ public class SeleniumWebDriverImpl implements WebBrowserAutomation {
 
     @Override
     public void selectDropDown(By locator, SelectAction action, String data) throws WebBrowserAutomationException {
-        if (getDriver() == null) {
+        if (ObjectUtils.isEmpty(getDriver())) {
             throw new WebBrowserAutomationException("Initialize Web Browser before calling this method");
         }
-        WebDriverWait wait = new WebDriverWait(this.driver, WAIT_TIMEOUT);
+        WebDriverWait wait = new WebDriverWait(this.driver, waitTimeoutSeconds);
         wait.until(ExpectedConditions.visibilityOfElementLocated(locator));
         Select select = new Select(getDriver().findElement(locator));
         switch (action) {
@@ -223,7 +226,7 @@ public class SeleniumWebDriverImpl implements WebBrowserAutomation {
 
     @Override
     public Boolean waitForPageLoad() throws WebBrowserAutomationException {
-        return new WebDriverWait(this.driver, WAIT_TIMEOUT).until(webDriver -> ((JavascriptExecutor) driver).executeScript("return document.readyState").equals("complete"));
+        return new WebDriverWait(this.driver, waitTimeoutSeconds).until(webDriver -> ((JavascriptExecutor) driver).executeScript("return document.readyState").equals("complete"));
     }
 
     @Override
@@ -257,30 +260,6 @@ public class SeleniumWebDriverImpl implements WebBrowserAutomation {
      * @return
      * @throws WebBrowserAutomationException
      */
-    @Override
-    public Boolean isElementDisplayed(By locator) throws WebBrowserAutomationException {
-        return null;
-    }
-
-    /**
-     * @param webElement
-     * @return
-     * @throws WebBrowserAutomationException
-     */
-    @Override
-    public Boolean isElementDisplayed(WebElement webElement) throws WebBrowserAutomationException {
-        return null;
-    }
-
-    /**
-     * @param locator
-     * @return
-     * @throws WebBrowserAutomationException
-     */
-    @Override
-    public Boolean isElementEnabled(By locator) throws WebBrowserAutomationException {
-        return null;
-    }
 
     /**
      * @param locator
@@ -390,21 +369,14 @@ public class SeleniumWebDriverImpl implements WebBrowserAutomation {
 
 
     private void isElementVisible(By locator) {
-        WebDriverWait wait = new WebDriverWait(this.driver, WAIT_TIMEOUT);
+        WebDriverWait wait = new WebDriverWait(this.driver, waitTimeoutSeconds);
         wait.until(ExpectedConditions.visibilityOfElementLocated(locator));
     }
 
     private void isElementClickable(By locator) {
-        WebDriverWait wait = new WebDriverWait(this.driver, WAIT_TIMEOUT);
+        WebDriverWait wait = new WebDriverWait(this.driver, waitTimeoutSeconds);
         wait.until(ExpectedConditions.elementToBeClickable(locator));
     }
-
-
-    private void isElementClickable(WebElement webElement) {
-        WebDriverWait wait = new WebDriverWait(this.driver, WAIT_TIMEOUT);
-        wait.until(ExpectedConditions.elementToBeClickable(webElement));
-    }
-
 
     public void openUrl(String url) throws WebBrowserAutomationException {
         getDriver().navigate().to(url);
@@ -443,19 +415,26 @@ public class SeleniumWebDriverImpl implements WebBrowserAutomation {
         this.waitManager = waitManager;
     }
 
-    public DriverInstanceManager getDriverManager() {
-        return driverManager;
-    }
-
-    public void setDriverManager(DriverInstanceManager driverManager) {
-        this.driverManager = driverManager;
-    }
-
     public WebElementManager getWebElementManager() {
         return webElementManager;
     }
 
     public void setWebElementManager(WebElementManager webElementManager) {
         this.webElementManager = webElementManager;
+    }
+    public DriverInstanceManager getDriverInstanceManager() {
+        return driverInstanceManager;
+    }
+
+    public void setDriverInstanceManager(DriverInstanceManager driverInstanceManager) {
+        this.driverInstanceManager = driverInstanceManager;
+    }
+
+    public DriverUserActionsManager getDriverUserActionsManager() {
+        return driverUserActionsManager;
+    }
+
+    public void setDriverUserActionsManager(DriverUserActionsManager driverUserActionsManager) {
+        this.driverUserActionsManager = driverUserActionsManager;
     }
 }

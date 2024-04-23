@@ -17,7 +17,7 @@ public class WebElementManager{
 
     private WebDriver driver;
 
-    private WebElement webElement;
+    private WebElement webElementMemory;
 
     private List<WebElement> webElements;
 
@@ -34,7 +34,7 @@ public class WebElementManager{
             if (locator == null) {
                 throw new WebBrowserAutomationException("Element From UI is Null");
             } else {
-                setElement(getDriver().findElement(locator));
+                setWebElementToMemory(getDriver().findElement(locator));
                 return getWebElementFromMemory();
             }
         } catch (Exception e) {
@@ -192,7 +192,7 @@ public class WebElementManager{
 
     public Object getDataFromListOfAvailableAttributes(By elementFromUi) throws WebBrowserAutomationException {
         try {
-            setElement(getWebElementFromDOM(elementFromUi));
+            setWebElementToMemory(getWebElementFromDOM(elementFromUi));
             return getJavaScriptExecutor().executeScript(
                     "var items = {}; for (index = 0; index < arguments[0].attributes.length; ++index) { items[arguments[0].attributes[index].name] = arguments[0].attributes[index].value }; return items;",
                     getWebElementFromMemory());
@@ -203,7 +203,7 @@ public class WebElementManager{
 
     public Object getDataFromListOfAvailableAttributes(WebElement elementFromUi) throws WebBrowserAutomationException {
         try {
-            setElement(elementFromUi);
+            setWebElementToMemory(elementFromUi);
             return getJavaScriptExecutor().executeScript(
                     "var items = {}; for (index = 0; index < arguments[0].attributes.length; ++index) { items[arguments[0].attributes[index].name] = arguments[0].attributes[index].value }; return items;",
                     getWebElementFromMemory());
@@ -211,7 +211,7 @@ public class WebElementManager{
             throw new WebBrowserAutomationException(e.getMessage());
         }
     }
-    public WebDriver getDriver() {
+    private WebDriver getDriver() {
         return driver;
     }
 
@@ -220,11 +220,11 @@ public class WebElementManager{
     }
 
     public WebElement getWebElementFromMemory() {
-        return webElement;
+        return webElementMemory;
     }
 
-    private void setElement(WebElement webElement) {
-        this.webElement = webElement;
+    private void setWebElementToMemory(WebElement webElement) {
+        this.webElementMemory = webElement;
     }
 
     /**
@@ -237,7 +237,7 @@ public class WebElementManager{
     /**
      * @param webElements the webElements to set
      */
-    public void setWebElements(List<WebElement> webElements) {
+    private void setWebElements(List<WebElement> webElements) {
         this.webElements = webElements;
     }
 
@@ -251,7 +251,7 @@ public class WebElementManager{
     /**
      * @param javaScriptExecutor the javaScriptExecutor to set
      */
-    public void setJavaScriptExecutor(JavascriptExecutor javaScriptExecutor) {
+    private void setJavaScriptExecutor(JavascriptExecutor javaScriptExecutor) {
         this.javaScriptExecutor = javaScriptExecutor;
     }
 }

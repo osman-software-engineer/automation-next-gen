@@ -11,17 +11,17 @@ import org.testng.asserts.SoftAssert;
 public class ClickTest extends BaseTest {
     @BeforeTest
     public void beforeTest() {
-        setApp(new SeleniumWebDriverImpl("web-browser-automation.properties"));
+        setWebBrowser(new SeleniumWebDriverImpl("web-browser-automation.properties"));
         setWebSiteUrl("https://www.google.com/");
         setSoftAssert(new SoftAssert());
     }
     @Test
     public void testClick() throws Exception {
         try {
-            getApp().openBrowser();
-            getApp().maximize();
-            getApp().openUrl(getWebSiteUrl());
-            getApp().click(By.xpath("//a[contains(text(), 'About')]"));
+            getWebBrowser().openWebBrowser();
+            getWebBrowser().maximize();
+            getWebBrowser().openUrl(getWebSiteUrl());
+            getWebBrowser().click(By.xpath("//a[contains(text(), 'About')]"));
 
         } catch (WebBrowserAutomationException e) {
             throw new RuntimeException(e);
@@ -29,6 +29,6 @@ public class ClickTest extends BaseTest {
     }
     @AfterTest
     public void afterTest() throws WebBrowserAutomationException {
-        getApp().closeBrowser();
+        getWebBrowser().closeBrowser();
     }
 }

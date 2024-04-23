@@ -12,7 +12,7 @@ import static org.testng.Assert.fail;
 public class GoBackTest extends BaseTest {
     @BeforeTest
     public void beforeTest() {
-        setApp(new SeleniumWebDriverImpl("web-browser-automation.properties"));
+        setWebBrowser(new SeleniumWebDriverImpl("web-browser-automation.properties"));
         setWebSiteUrl("https://www.google.com/");
         setSoftAssert(new SoftAssert());
     }
@@ -20,18 +20,18 @@ public class GoBackTest extends BaseTest {
     public void testGoBack() throws Exception {
         try {
             setSoftAssert(new SoftAssert());
-            setApp(new SeleniumWebDriverImpl("web-browser-automation.properties"));
-            getApp().openBrowser();
-            getApp().maximize();
-            getApp().openUrl(getWebSiteUrl());
-            getApp().goBack();
-            getApp().closeBrowser();
+            setWebBrowser(new SeleniumWebDriverImpl("web-browser-automation.properties"));
+            getWebBrowser().openWebBrowser();
+            getWebBrowser().maximize();
+            getWebBrowser().openUrl(getWebSiteUrl());
+            getWebBrowser().goBack();
+            getWebBrowser().closeBrowser();
         } catch (Exception e) {
             getSoftAssert().assertAll("Exception was thrown during the testGoBack method execution: " + e.getMessage());
         }
     }
     @AfterTest
     public void afterTest() throws WebBrowserAutomationException {
-        getApp().closeBrowser();
+        getWebBrowser().closeBrowser();
     }
 }
