@@ -38,8 +38,6 @@ public interface WebBrowserAutomation {
 
     void type(By locator, String data) throws WebBrowserAutomationException;
 
-    void type(WebElement webElement, String data) throws WebBrowserAutomationException;
-
     void selectDropDown(By locator, SelectAction action, String data) throws WebBrowserAutomationException;
 
     Boolean waitForPageLoad() throws WebBrowserAutomationException;

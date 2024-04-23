@@ -70,7 +70,7 @@ public class SeleniumWebDriverImpl implements WebBrowserAutomation {
 
     @Override
     public void minimize() throws WebBrowserAutomationException {
-        if (ObjectUtils.isEmpty(getDriver())){
+        if (ObjectUtils.isEmpty(getDriver())) {
             throw new WebBrowserAutomationException("Web Browser is not open");
         }
         getDriver().manage().window().minimize();
@@ -78,7 +78,7 @@ public class SeleniumWebDriverImpl implements WebBrowserAutomation {
 
     @Override
     public void maximize() throws WebBrowserAutomationException {
-        if (ObjectUtils.isEmpty(getDriver())){
+        if (ObjectUtils.isEmpty(getDriver())) {
             throw new WebBrowserAutomationException("Web Browser is not open");
         }
         getDriver().manage().window().maximize();
@@ -91,7 +91,7 @@ public class SeleniumWebDriverImpl implements WebBrowserAutomation {
      */
     @Override
     public SessionId getSessionID() throws WebBrowserAutomationException {
-        if (ObjectUtils.isEmpty(getDriver())){
+        if (ObjectUtils.isEmpty(getDriver())) {
             throw new WebBrowserAutomationException("Web Browser is not open");
         }
         return ((RemoteWebDriver) getDriver()).getSessionId();
@@ -99,7 +99,7 @@ public class SeleniumWebDriverImpl implements WebBrowserAutomation {
 
     @Override
     public void refresh() throws WebBrowserAutomationException {
-        if (ObjectUtils.isEmpty(getDriver())){
+        if (ObjectUtils.isEmpty(getDriver())) {
             throw new WebBrowserAutomationException("Web Browser is not open");
         }
         getDriver().navigate().refresh();
@@ -107,7 +107,7 @@ public class SeleniumWebDriverImpl implements WebBrowserAutomation {
 
     @Override
     public void openNewTab() throws WebBrowserAutomationException {
-        if (ObjectUtils.isEmpty(getDriver())){
+        if (ObjectUtils.isEmpty(getDriver())) {
             throw new WebBrowserAutomationException("Web Browser is not open");
         }
         JavascriptExecutor jse = (JavascriptExecutor) getDriver();
@@ -116,7 +116,7 @@ public class SeleniumWebDriverImpl implements WebBrowserAutomation {
 
     @Override
     public void switchToTabWithTitle(String title) throws WebBrowserAutomationException {
-        if (ObjectUtils.isEmpty(getDriver())){
+        if (ObjectUtils.isEmpty(getDriver())) {
             throw new WebBrowserAutomationException("Web Browser is not open");
         }
         try {
@@ -144,7 +144,7 @@ public class SeleniumWebDriverImpl implements WebBrowserAutomation {
 
     @Override
     public void goBack() throws WebBrowserAutomationException {
-        if (ObjectUtils.isEmpty(getDriver())){
+        if (ObjectUtils.isEmpty(getDriver())) {
             throw new WebBrowserAutomationException("Web Browser is not open");
         }
         getDriver().navigate().back();
@@ -152,7 +152,7 @@ public class SeleniumWebDriverImpl implements WebBrowserAutomation {
 
     @Override
     public void goToUrl(String url) throws WebBrowserAutomationException {
-        if (ObjectUtils.isEmpty(getDriver())){
+        if (ObjectUtils.isEmpty(getDriver())) {
             throw new WebBrowserAutomationException("Web Browser is not open");
         }
         try {
@@ -164,7 +164,7 @@ public class SeleniumWebDriverImpl implements WebBrowserAutomation {
 
     @Override
     public void goForward() throws WebBrowserAutomationException {
-        if (ObjectUtils.isEmpty(getDriver())){
+        if (ObjectUtils.isEmpty(getDriver())) {
             throw new WebBrowserAutomationException("Web Browser is not open");
         }
         try {
@@ -176,23 +176,24 @@ public class SeleniumWebDriverImpl implements WebBrowserAutomation {
 
     @Override
     public void click(By locator) throws WebBrowserAutomationException {
-        if (ObjectUtils.isEmpty(getDriver())){
+        if (ObjectUtils.isEmpty(getDriver())) {
             throw new WebBrowserAutomationException("Web Browser is not open");
         }
         isElementClickable(locator);
         getDriver().findElement(locator).click();
     }
+
     @Override
     public void type(By locator, String data) throws WebBrowserAutomationException {
         if (ObjectUtils.isEmpty(getDriver())) {
-            throw new WebBrowserAutomationException("Web Browser is not open.");
+            throw new WebBrowserAutomationException("Initialize Web Browser before calling this method.");
         }
         setDriverUserActionsManager(new DriverUserActionsManager(getDriver()));
-        getDriverUserActionsManager().type(locator,data);
+        getDriverUserActionsManager().type(locator, data);
     }
 
-    @Override
-    public void type(WebElement webElement, String data) throws WebBrowserAutomationException {
+
+    private void type(WebElement webElement, String data) throws WebBrowserAutomationException {
         if (ObjectUtils.isEmpty(getDriver())) {
             throw new WebBrowserAutomationException("Initialize Web Browser before calling this method");
         }
@@ -213,13 +214,13 @@ public class SeleniumWebDriverImpl implements WebBrowserAutomation {
         Select select = new Select(getDriver().findElement(locator));
         switch (action) {
             case BY_INDEX:
-                select.selectByIndex(Integer.parseInt(data));
+                select.selectByIndex(Integer.parseInt(data.trim()));
                 break;
             case BY_VISIBLE_TEXT:
-                select.selectByVisibleText(data);
+                select.selectByVisibleText(data.trim());
                 break;
             case BY_VALUE:
-                select.selectByValue(data);
+                select.selectByValue(data.trim());
                 break;
         }
     }
@@ -383,27 +384,27 @@ public class SeleniumWebDriverImpl implements WebBrowserAutomation {
     }
 
 
-    public String getPropertyFileName() {
+    private String getPropertyFileName() {
         return propertyFileName;
     }
 
-    public void setPropertyFileName(String propertyFileName) {
+    private void setPropertyFileName(String propertyFileName) {
         this.propertyFileName = propertyFileName;
     }
 
-    public WebDriver getDriver() {
+    private WebDriver getDriver() {
         return driver;
     }
 
-    public void setDriver(WebDriver driver) {
+    private void setDriver(WebDriver driver) {
         this.driver = driver;
     }
 
-    public AppConfig getWebBrowserProperties() {
+    private AppConfig getWebBrowserProperties() {
         return webBrowserProperties;
     }
 
-    public void setWebBrowserProperties(AppConfig webBrowserProperties) {
+    private void setWebBrowserProperties(AppConfig webBrowserProperties) {
         this.webBrowserProperties = webBrowserProperties;
     }
 
@@ -411,7 +412,7 @@ public class SeleniumWebDriverImpl implements WebBrowserAutomation {
         return waitManager;
     }
 
-    public void setWaitManager(WaitManager waitManager) {
+    private void setWaitManager(WaitManager waitManager) {
         this.waitManager = waitManager;
     }
 
@@ -419,14 +420,15 @@ public class SeleniumWebDriverImpl implements WebBrowserAutomation {
         return webElementManager;
     }
 
-    public void setWebElementManager(WebElementManager webElementManager) {
+    private void setWebElementManager(WebElementManager webElementManager) {
         this.webElementManager = webElementManager;
     }
+
     public DriverInstanceManager getDriverInstanceManager() {
         return driverInstanceManager;
     }
 
-    public void setDriverInstanceManager(DriverInstanceManager driverInstanceManager) {
+    private void setDriverInstanceManager(DriverInstanceManager driverInstanceManager) {
         this.driverInstanceManager = driverInstanceManager;
     }
 
@@ -434,7 +436,8 @@ public class SeleniumWebDriverImpl implements WebBrowserAutomation {
         return driverUserActionsManager;
     }
 
-    public void setDriverUserActionsManager(DriverUserActionsManager driverUserActionsManager) {
+    private void setDriverUserActionsManager(DriverUserActionsManager driverUserActionsManager) {
         this.driverUserActionsManager = driverUserActionsManager;
     }
+
 }
