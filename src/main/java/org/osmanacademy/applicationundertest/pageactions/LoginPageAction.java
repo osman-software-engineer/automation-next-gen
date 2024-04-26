@@ -5,19 +5,19 @@ import org.osmanacademy.webbrowser.WebBrowserAutomation;
 import org.osmanacademy.webbrowser.exceptions.WebBrowserAutomationException;
 
 public class LoginPageAction {
-    private LoginPageObject loginPageObject;
+    private final ThreadLocal<LoginPageObject> loginPageObject = new ThreadLocal<LoginPageObject>();
 
     public LoginPageAction(WebBrowserAutomation webBrowserAutomation) {
-        this.loginPageObject = new LoginPageObject(webBrowserAutomation);
+        this.loginPageObject.set(new LoginPageObject(webBrowserAutomation));
     }
 
     public void performLogin(String username, String password) throws WebBrowserAutomationException {
         try {
-            loginPageObject.enterUsername(username);
-            loginPageObject.enterPassword(password);
-            loginPageObject.clickLoginButton();
+            loginPageObject.get().enterUsername(username);
+            loginPageObject.get().enterPassword(password);
+            loginPageObject.get().clickLoginButton();
         } catch (WebBrowserAutomationException e) {
-            throw new WebBrowserAutomationException("Couldn't able to login into application " + e.getMessage());
+            throw new WebBrowserAutomationException(STR."Couldn't able to login into application \{e.getMessage()}");
         }
     }
 }

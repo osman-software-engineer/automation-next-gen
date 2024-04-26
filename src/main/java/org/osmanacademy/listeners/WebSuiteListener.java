@@ -1,7 +1,8 @@
 package org.osmanacademy.listeners;
 
-import org.apache.commons.io.FileUtils;
+
 import net.lingala.zip4j.ZipFile;
+import org.apache.commons.io.FileUtils;
 import org.osmanacademy.common.ZipUnZipFilesUtil;
 import org.osmanacademy.webbrowser.filelocations.WebTestFileLocations;
 import org.testng.ISuite;

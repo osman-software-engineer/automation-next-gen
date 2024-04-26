@@ -1,9 +1,9 @@
-package org.osmanacademy.testdata;
+package org.osmanacademy.randomtestdatagenerator;
 
 import org.osmanacademy.enums.DateFormat;
 
 
-public interface TestDataGenerator {
+public interface RandomTestDataGeneratorAutomation {
 
     public String getFirstName();
 

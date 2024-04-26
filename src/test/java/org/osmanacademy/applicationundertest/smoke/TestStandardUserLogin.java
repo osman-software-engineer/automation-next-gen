@@ -9,7 +9,7 @@ import org.testng.annotations.BeforeTest;
 import org.testng.annotations.Test;
 import org.testng.asserts.SoftAssert;
 
-public class testStandardUserLogin extends BaseTest {
+public class TestStandardUserLogin extends BaseTest {
     @BeforeTest
     public void beforeTest() {
         setWebBrowser(new SeleniumWebDriverImpl("web-browser-automation.properties"));
