@@ -47,68 +47,70 @@
         <zip4j.version>2.5.2</zip4j.version>
         <maven-compiler-plugin.version>3.12.1</maven-compiler-plugin.version>
         <axe-selenium.version>3.0</axe-selenium.version>
+        <allure-maven.version>2.12.0</allure-maven.version>
+        <selenium-support.version>4.16.1</selenium-support.version>
     </properties>
     <!-- Properties Starts Here-->
- <profiles>
-     <profile>
-         <id>SmokeTest</id>
-         <build>
-             <pluginManagement>
-                 <plugins>
-                     <plugin>
-                         <groupId>org.apache.maven.plugins</groupId>
-                         <artifactId>maven-surefire-plugin</artifactId>
-                         <version>${maven-surefire-plugin.version}</version>
-                         <configuration>
-                             <suiteXmlFiles>
-                                 <suiteXmlFile>./src/test/resources/testrunner/smoke/SmokeTestSuite.xml</suiteXmlFile>
-                             </suiteXmlFiles>
-                             <argLine>
-                                 -javaagent:"${settings.localRepository}/org/aspectj/aspectjweaver/${aspectj.version}/aspectjweaver-${aspectj.version}.jar"
-                             </argLine>
-                         </configuration>
-                         <dependencies>
-                             <dependency>
-                                 <groupId>org.aspectj</groupId>
-                                 <artifactId>aspectjweaver</artifactId>
-                                 <version>${aspectj.version}</version>
-                             </dependency>
-                         </dependencies>
-                     </plugin>
-                 </plugins>
-             </pluginManagement>
-         </build>
-     </profile>
-     <profile>
-         <id>TestNG_Failed_Tests</id>
-         <build>
-             <pluginManagement>
-                 <plugins>
-                     <plugin>
-                         <groupId>org.apache.maven.plugins</groupId>
-                         <artifactId>maven-surefire-plugin</artifactId>
-                         <version>${maven-surefire-plugin.version}</version>
-                         <configuration>
-                             <suiteXmlFiles>
-                                 <suiteXmlFile>./test-output/testng-failed.xml</suiteXmlFile>
-                             </suiteXmlFiles>
-                             <argLine>
-                                 -javaagent:"${settings.localRepository}/org/aspectj/aspectjweaver/${aspectj.version}/aspectjweaver-${aspectj.version}.jar"
-                             </argLine>
-                         </configuration>
-                         <dependencies>
-                             <dependency>
-                                 <groupId>org.aspectj</groupId>
-                                 <artifactId>aspectjweaver</artifactId>
-                                 <version>${aspectj.version}</version>
-                             </dependency>
-                         </dependencies>
-                     </plugin>
-                 </plugins>
-             </pluginManagement>
-         </build>
-     </profile>
- </profiles>
+    <profiles>
+        <profile>
+            <id>SmokeTest</id>
+            <build>
+                <pluginManagement>
+                    <plugins>
+                        <plugin>
+                            <groupId>org.apache.maven.plugins</groupId>
+                            <artifactId>maven-surefire-plugin</artifactId>
+                            <version>${maven-surefire-plugin.version}</version>
+                            <configuration>
+                                <suiteXmlFiles>
+                                    <suiteXmlFile>./src/test/resources/testrunner/smoke/SmokeTestSuite.xml</suiteXmlFile>
+                                </suiteXmlFiles>
+                                <argLine>
+                                    -javaagent:"${settings.localRepository}/org/aspectj/aspectjweaver/${aspectj.version}/aspectjweaver-${aspectj.version}.jar"
+                                </argLine>
+                            </configuration>
+                            <dependencies>
+                                <dependency>
+                                    <groupId>org.aspectj</groupId>
+                                    <artifactId>aspectjweaver</artifactId>
+                                    <version>${aspectj.version}</version>
+                                </dependency>
+                            </dependencies>
+                        </plugin>
+                    </plugins>
+                </pluginManagement>
+            </build>
+        </profile>
+        <profile>
+            <id>TestNG_Failed_Tests</id>
+            <build>
+                <pluginManagement>
+                    <plugins>
+                        <plugin>
+                            <groupId>org.apache.maven.plugins</groupId>
+                            <artifactId>maven-surefire-plugin</artifactId>
+                            <version>${maven-surefire-plugin.version}</version>
+                            <configuration>
+                                <suiteXmlFiles>
+                                    <suiteXmlFile>./test-output/testng-failed.xml</suiteXmlFile>
+                                </suiteXmlFiles>
+                                <argLine>
+                                    -javaagent:"${settings.localRepository}/org/aspectj/aspectjweaver/${aspectj.version}/aspectjweaver-${aspectj.version}.jar"
+                                </argLine>
+                            </configuration>
+                            <dependencies>
+                                <dependency>
+                                    <groupId>org.aspectj</groupId>
+                                    <artifactId>aspectjweaver</artifactId>
+                                    <version>${aspectj.version}</version>
+                                </dependency>
+                            </dependencies>
+                        </plugin>
+                    </plugins>
+                </pluginManagement>
+            </build>
+        </profile>
+    </profiles>
     <dependencies>
         <!-- Dependencies Declaration Starts Here-->
         <!-- Logging Api's -->
@@ -314,7 +316,7 @@
         <dependency>
             <groupId>org.seleniumhq.selenium</groupId>
             <artifactId>selenium-support</artifactId>
-            <version>4.16.1</version>
+            <version>${selenium-support.version}</version>
         </dependency>
         <!-- Dependencies Declaration Ends Here-->
     </dependencies>
@@ -342,7 +344,7 @@
             <plugin>
                 <groupId>io.qameta.allure</groupId>
                 <artifactId>allure-maven</artifactId>
-                <version>2.12.0</version>
+                <version>${allure-maven.version}</version>
                 <configuration>
                     <reportVersion>${allure.version}</reportVersion>
                     <resultsDirectory>${project.build.directory}/allure-results</resultsDirectory>

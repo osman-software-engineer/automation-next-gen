@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE suite SYSTEM "http://testng.org/testng-1.0.dtd">
+<suite thread-count="1" name="Web Automation Test Suite ::: Smoke"
+       parallel="tests">
+    <listeners>
+        <listener
+                class-name="org.osmanacademy.listeners.WebSuiteListener"></listener>
+        <listener
+                class-name="org.osmanacademy.listeners.WebTestListener"></listener>
+    </listeners>
+    <test name="Test 1">
+        <classes>
+            <class
+                    name="org.osmanacademy.tests.StandardUserLoginTest" />
+        </classes>
+    </test>
+</suite>
