@@ -1,0 +1,1 @@
+package org.osmanacademy.testsuites.regression;
