@@ -4,7 +4,10 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.edge.EdgeDriver;
 import org.openqa.selenium.firefox.FirefoxDriver;
+import org.openqa.selenium.support.events.EventFiringDecorator;
+import org.openqa.selenium.support.events.WebDriverListener;
 import org.osmanacademy.exceptions.AutomationNextGenException;
+import org.osmanacademy.listeners.WebBrowserListener;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -16,6 +19,14 @@ public class DriverInstanceManager {
 
     private WebDriver driver;
 
+    private WebDriver original;
+
+    private EventFiringDecorator eventFiringWebDriver;
+
+    private WebDriverListener listener;
+
+    private WebDriver decorated;
+
     /**
      * Opens a ChromeDriver instance with options provided by the ChromeOptionsManager.
      * If the 'start.maximized' property is set to true in the webBrowserProperties, the ChromeDriver will start maximized.
@@ -24,12 +35,15 @@ public class DriverInstanceManager {
      *
      * @throws AutomationNextGenException if there was an error opening the ChromeDriver or if the device name for mobile emulation is invalid.
      */
-    public WebDriver openChromeDriver(String propertyFileName) throws AutomationNextGenException {
+    public void openChromeDriver(String propertyFileName) throws AutomationNextGenException {
         ChromeOptionsManager chromeOptionsManager = new ChromeOptionsManager(propertyFileName);
         chromeOptionsManager.manageStartMaximized();
         chromeOptionsManager.manageMobileEmulation();
-        setDriver(new ChromeDriver(chromeOptionsManager.getChromeOptions()));
-        return getDriver();
+        //setDriver(new ChromeDriver(chromeOptionsManager.getChromeOptions()));
+        original = new ChromeDriver(chromeOptionsManager.getChromeOptions());
+        listener = new WebBrowserListener();
+        decorated = new EventFiringDecorator(listener).decorate(original);
+
     }
 
     /**
@@ -38,9 +52,8 @@ public class DriverInstanceManager {
      * @param propertyFileName the name of the property file containing the web browser configuration.
      * @throws AutomationNextGenException if there was an error opening the Firefox browser.
      */
-    public WebDriver openFirefoxDriver(String propertyFileName) throws AutomationNextGenException {
+    public void openFirefoxDriver(String propertyFileName) throws AutomationNextGenException {
         setDriver(new FirefoxDriver());
-        return getDriver();
     }
 
     /**
@@ -49,9 +62,8 @@ public class DriverInstanceManager {
      * @param propertyFileName the name of the property file containing the web browser configuration.
      * @throws AutomationNextGenException if there was an error opening the Edge browser.
      */
-    public WebDriver openEdgeBrowser(String propertyFileName) throws AutomationNextGenException {
+    public void openEdgeBrowser(String propertyFileName) throws AutomationNextGenException {
         setDriver(new EdgeDriver());
-        return getDriver();
     }
 
     /**
@@ -70,5 +82,37 @@ public class DriverInstanceManager {
      */
     public void setDriver(WebDriver driver) {
         this.driver = driver;
+    }
+
+    public WebDriver getOriginal() {
+        return original;
+    }
+
+    public void setOriginal(WebDriver original) {
+        this.original = original;
+    }
+
+    public EventFiringDecorator getEventFiringWebDriver() {
+        return eventFiringWebDriver;
+    }
+
+    public void setEventFiringWebDriver(EventFiringDecorator eventFiringWebDriver) {
+        this.eventFiringWebDriver = eventFiringWebDriver;
+    }
+
+    public WebDriverListener getListener() {
+        return listener;
+    }
+
+    public void setListener(WebDriverListener listener) {
+        this.listener = listener;
+    }
+
+    public WebDriver getDecorated() {
+        return decorated;
+    }
+
+    public void setDecorated(WebDriver decorated) {
+        this.decorated = decorated;
     }
 }

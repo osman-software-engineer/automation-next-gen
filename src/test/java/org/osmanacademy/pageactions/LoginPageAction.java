@@ -21,14 +21,14 @@ public class LoginPageAction {
         setLoginPageObject(new LoginPageObject(automationNextGen));
     }
 
-   public Result functionalityLogin() throws AutomationNextGenException {
+   public Result performLogin() throws AutomationNextGenException {
         try {
             getLoginPageObject().enterUsername(getLoginPageData().getUsername());
             getLoginPageObject().enterPassword(getLoginPageData().getPassword());
             getLoginPageObject().clickOnLoginButton();
             return Result.PASS;
         } catch (AutomationNextGenException e) {
-            throw new AutomationNextGenException("Couldn't able to Login to Application ::: " + e.getMessage());
+            throw new AutomationNextGenException("Couldn't able to Login to Application : " , e);
         }
     }
 

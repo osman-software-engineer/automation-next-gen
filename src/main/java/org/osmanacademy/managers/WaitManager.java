@@ -37,7 +37,7 @@ public class WaitManager {
     }
 
 
-    public void waitExplicit(By webElement, ExpectedWaitCondition condition) throws AutomationNextGenException {
+    public void waitExplicit(By webElement, ExpectedWaitCondition condition) throws Exception {
         switch (condition) {
             case VISIBILE:
                 getWaitExplicit().until(ExpectedConditions.visibilityOf(getDriver().findElement(webElement)));
@@ -78,7 +78,7 @@ public class WaitManager {
                 default:
                     break;
             }
-        } catch (AutomationNextGenException e) {
+        } catch (Exception e) {
             throw new AutomationNextGenException(e.getMessage());
         }
     }
@@ -102,7 +102,7 @@ public class WaitManager {
             }
         }
 
-    public void waitFluentOnText(By webElement, String text) throws AutomationNextGenException {
+    public void waitFluentOnText(By webElement, String text) throws Exception {
         setWaitFluent(new FluentWait<WebDriver>(getDriver()).withTimeout(Duration.ofSeconds(TIMEOUT))
                 .pollingEvery(Duration.ofSeconds(1)).ignoring(NoSuchElementException.class)
                 .ignoring(StaleElementReferenceException.class));
@@ -110,23 +110,23 @@ public class WaitManager {
 
     }
 
-    public void waitForPageLoad() throws AutomationNextGenException {
+    public void waitForPageLoad() throws Exception {
         new WebDriverWait(getDriver(), WAIT_TIMEOUT).until(webDriver -> ((JavascriptExecutor) driver)
                 .executeScript("return document.readyState").equals("complete"));
     }
 
-    public Boolean waitForPageLoad(By elementToBeStale, By elementToBeVisible) throws AutomationNextGenException {
+    public Boolean waitForPageLoad(By elementToBeStale, By elementToBeVisible) throws Exception {
         try {
             waitFluent(elementToBeStale, ExpectedWaitCondition.STALE);
             waitForPageLoad();
             waitFluent(elementToBeVisible, ExpectedWaitCondition.VISIBILE);
             return true;
-        } catch (AutomationNextGenException e) {
+        } catch (Exception e) {
             return false;
         }
     }
 
-    public void waitStatic(long duration) throws AutomationNextGenException {
+    public void waitStatic(long duration) throws Exception {
         try {
             Thread.sleep(duration);
         } catch (InterruptedException e) {

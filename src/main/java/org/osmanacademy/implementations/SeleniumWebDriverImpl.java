@@ -14,7 +14,6 @@ import org.osmanacademy.enums.WebBrowserName;
 import org.osmanacademy.interfaces.WebBrowser;
 import org.osmanacademy.enums.ExpectedWaitCondition;
 import org.osmanacademy.enums.SelectAction;
-import org.osmanacademy.exceptions.AutomationNextGenException;
 import org.osmanacademy.managers.DriverInstanceManager;
 import org.osmanacademy.managers.WaitManager;
 import org.osmanacademy.managers.WebElementManager;
@@ -38,17 +37,16 @@ public class SeleniumWebDriverImpl implements WebBrowser {
         setPropertyFileName(propertyFileName);
         setWebBrowserProperties(new PropertiesFileLoader(propertyFileName));
         setDriverManager(new DriverInstanceManager());
-        logger.info("SeleniumWebDriverImpl initialized with property file: {}", propertyFileName);
     }
 
     @Override
-    public void openBrowser() throws AutomationNextGenException {
+    public void openBrowser() throws Exception {
         WebBrowserName webBrowserName;
         String browserName = getWebBrowserProperties().getProperty("web.browser.name");
         // Check for Valid request
         try {
             webBrowserName = WebBrowserName.findByValue(browserName);
-        } catch (Exception e) {
+        } catch (IllegalArgumentException e) {
             {
                 StringBuilder sb = new StringBuilder();
                 sb.append("Invalid Test Execution Environment Name.\nPossible Causes. " +
@@ -75,22 +73,22 @@ public class SeleniumWebDriverImpl implements WebBrowser {
                 getDriverManager().openFirefoxDriver(getPropertyFileName());
                 break;
         }
-        logger.info("Web Browser is open: {}", browserName);
-        setDriver(getDriverManager().getDriver());
+        logger.info("Type of Web Browser Opened: {}", browserName);
+        setDriver(getDriverManager().getDecorated());
     }
 
     @Override
-    public void minimize() throws AutomationNextGenException {
+    public void minimize() throws Exception {
         if (getDriver() == null){
-            throw new AutomationNextGenException("Web Browser is not open");
+            throw new Exception("Web Browser is not open");
         }
         getDriver().manage().window().minimize();
     }
 
     @Override
-    public void maximize() throws AutomationNextGenException {
+    public void maximize() throws Exception {
         if (getDriver() == null){
-            throw new AutomationNextGenException("Web Browser is not open");
+            throw new Exception("Web Browser is not open");
         }
         getDriver().manage().window().maximize();
 
@@ -98,58 +96,54 @@ public class SeleniumWebDriverImpl implements WebBrowser {
 
     /**
      * @return
-     * @throws AutomationNextGenException
+     * @throws Exception
      */
     @Override
-    public SessionId getSessionID() throws AutomationNextGenException {
+    public SessionId getSessionID() throws Exception {
         if (getDriver() == null){
-            throw new AutomationNextGenException("Web Browser is not open");
+            throw new Exception("Web Browser is not open");
         }
         return ((RemoteWebDriver) getDriver()).getSessionId();
     }
 
     @Override
-    public void refresh() throws AutomationNextGenException {
+    public void refresh() throws Exception {
         if (getDriver() == null){
-            throw new AutomationNextGenException("Web Browser is not open");
+            throw new Exception("Web Browser is not open");
         }
         getDriver().navigate().refresh();
     }
 
     @Override
-    public void openNewTab() throws AutomationNextGenException {
+    public void openNewTab() throws Exception {
         if (getDriver() == null){
-            throw new AutomationNextGenException("Web Browser is not open");
+            throw new Exception("Web Browser is not open");
         }
         JavascriptExecutor jse = (JavascriptExecutor) getDriver();
         jse.executeScript("window.open()");
     }
 
     @Override
-    public void switchToTabWithTitle(String title) throws AutomationNextGenException {
+    public void switchToTabWithTitle(String title) throws Exception {
         if (getDriver() == null){
-            throw new AutomationNextGenException("Web Browser is not open");
+            throw new Exception("Web Browser is not open");
         }
-        try {
-            // Store the original window handle for reference
-            String originalWindow = getDriver().getWindowHandle();
-            boolean found = false;
-            // Iterate over all open tabs
-            for (String handle : getDriver().getWindowHandles()) {
-                // Switch to each tab
-                getDriver().switchTo().window(handle);
-                // Check if the tab's title matches the desired title
-                if (getDriver().getTitle().equals(title)) {
-                    found = true;
-                    break;
-                }
+        // Store the original window handle for reference
+        String originalWindow = getDriver().getWindowHandle();
+        boolean found = false;
+        // Iterate over all open tabs
+        for (String handle : getDriver().getWindowHandles()) {
+            // Switch to each tab
+            getDriver().switchTo().window(handle);
+            // Check if the tab's title matches the desired title
+            if (getDriver().getTitle().equals(title)) {
+                found = true;
+                break;
             }
-            // If the tab was not found, switch back to the original window
-            if (!found) {
-                getDriver().switchTo().window(originalWindow);
-            }
-        } catch (Exception e) {
-            throw new RuntimeException(e);
+        }
+        // If the tab was not found, switch back to the original window
+        if (!found) {
+            getDriver().switchTo().window(originalWindow);
         }
     }
 
@@ -160,20 +154,12 @@ public class SeleniumWebDriverImpl implements WebBrowser {
 
     @Override
     public void goToUrl(String url) throws Exception {
-        try {
-            getDriver().navigate().to(url);
-        } catch (Exception e) {
-            throw new AutomationNextGenException(e.getMessage());
-        }
+        getDriver().navigate().to(url);
     }
 
     @Override
-    public void goForward() throws AutomationNextGenException {
-        try {
-            getDriver().navigate().forward();
-        } catch (Exception e) {
-            throw new AutomationNextGenException(e.getMessage());
-        }
+    public void goForward() throws Exception {
+        getDriver().navigate().forward();
     }
 
     @Override
@@ -189,23 +175,27 @@ public class SeleniumWebDriverImpl implements WebBrowser {
     }
 
     @Override
-    public void type(By locator, String data) throws AutomationNextGenException {
+    public void type(By locator, String data) throws Exception {
         if (getDriver() == null) {
-            throw new AutomationNextGenException("Initialize Web Browser before calling this method");
+            throw new Exception("Initialize Web Browser before calling this method");
         }
-        setWaitManager(new WaitManager(getDriver()));
-        getWaitManager().waitFluent(locator, ExpectedWaitCondition.PRESENCE);
-        getWaitManager().waitFluent(locator, ExpectedWaitCondition.VISIBILE);
-        setWebElementManager(new WebElementManager(getDriver()));
-        getWebElementManager().getWebElementFromDOM(locator);
-        getWebElementManager().getWebElementFromMemory().clear();
-        getWebElementManager().getWebElementFromMemory().sendKeys(data);
+        try {
+            setWaitManager(new WaitManager(getDriver()));
+            getWaitManager().waitFluent(locator, ExpectedWaitCondition.PRESENCE);
+            getWaitManager().waitFluent(locator, ExpectedWaitCondition.VISIBILE);
+            setWebElementManager(new WebElementManager(getDriver()));
+            getWebElementManager().getWebElementFromDOM(locator);
+            getWebElementManager().getWebElementFromMemory().clear();
+            getWebElementManager().getWebElementFromMemory().sendKeys(data);
+        } catch (Exception e) {
+            throw new Exception("Couldn't able to type: " , e);
+        }
     }
 
     @Override
-    public void type(WebElement webElement, String data) throws AutomationNextGenException {
+    public void type(WebElement webElement, String data) throws Exception {
         if (getDriver() == null) {
-            throw new AutomationNextGenException("Initialize Web Browser before calling this method");
+            throw new Exception("Initialize Web Browser before calling this method");
         }
         setWaitManager(new WaitManager(getDriver()));
         getWaitManager().waitFluent(webElement, ExpectedWaitCondition.PRESENCE);
@@ -215,9 +205,9 @@ public class SeleniumWebDriverImpl implements WebBrowser {
     }
 
     @Override
-    public void selectDropDown(By locator, SelectAction action, String data) throws AutomationNextGenException {
+    public void selectDropDown(By locator, SelectAction action, String data) throws Exception {
         if (getDriver() == null) {
-            throw new AutomationNextGenException("Initialize Web Browser before calling this method");
+            throw new Exception("Initialize Web Browser before calling this method");
         }
         WebDriverWait wait = new WebDriverWait(this.driver, WAIT_TIMEOUT);
         wait.until(ExpectedConditions.visibilityOfElementLocated(locator));
@@ -236,7 +226,7 @@ public class SeleniumWebDriverImpl implements WebBrowser {
     }
 
     @Override
-    public Boolean waitForPageLoad() throws AutomationNextGenException {
+    public Boolean waitForPageLoad() throws Exception {
         return new WebDriverWait(this.driver, WAIT_TIMEOUT).until(webDriver -> ((JavascriptExecutor) driver).executeScript("return document.readyState").equals("complete"));
     }
 
@@ -248,10 +238,10 @@ public class SeleniumWebDriverImpl implements WebBrowser {
     /**
      * @param elementFromUi
      * @return
-     * @throws AutomationNextGenException
+     * @throws Exception
      */
     @Override
-    public List<WebElement> getWebElements(By elementFromUi) throws AutomationNextGenException {
+    public List<WebElement> getWebElements(By elementFromUi) throws Exception {
         setWebElementManager(new WebElementManager(getDriver()));
         return getWebElementManager().getWebElements(elementFromUi);
     }
@@ -259,60 +249,60 @@ public class SeleniumWebDriverImpl implements WebBrowser {
     /**
      * @param locator
      * @return
-     * @throws AutomationNextGenException
+     * @throws Exception
      */
     @Override
-    public WebElement getWebElement(By locator) throws AutomationNextGenException {
+    public WebElement getWebElement(By locator) throws Exception {
         return null;
     }
 
     /**
      * @param locator
      * @return
-     * @throws AutomationNextGenException
+     * @throws Exception
      */
     @Override
-    public Boolean isElementDisplayed(By locator) throws AutomationNextGenException {
+    public Boolean isElementDisplayed(By locator) throws Exception {
         return null;
     }
 
     /**
      * @param webElement
      * @return
-     * @throws AutomationNextGenException
+     * @throws Exception
      */
     @Override
-    public Boolean isElementDisplayed(WebElement webElement) throws AutomationNextGenException {
+    public Boolean isElementDisplayed(WebElement webElement) throws Exception {
         return null;
     }
 
     /**
      * @param locator
      * @return
-     * @throws AutomationNextGenException
+     * @throws Exception
      */
     @Override
-    public Boolean isElementEnabled(By locator) throws AutomationNextGenException {
+    public Boolean isElementEnabled(By locator) throws Exception {
         return null;
     }
 
     /**
      * @param locator
      * @return
-     * @throws AutomationNextGenException
+     * @throws Exception
      */
     @Override
-    public Boolean isElementSelected(By locator) throws AutomationNextGenException {
+    public Boolean isElementSelected(By locator) throws Exception {
         return null;
     }
 
     /**
      * @param locator
      * @return
-     * @throws AutomationNextGenException
+     * @throws Exception
      */
     @Override
-    public String getText(By locator) throws AutomationNextGenException {
+    public String getText(By locator) throws Exception {
         return null;
     }
 
@@ -320,10 +310,10 @@ public class SeleniumWebDriverImpl implements WebBrowser {
      * @param locator
      * @param propertyName
      * @return
-     * @throws AutomationNextGenException
+     * @throws Exception
      */
     @Override
-    public String getCssValue(By locator, String propertyName) throws AutomationNextGenException {
+    public String getCssValue(By locator, String propertyName) throws Exception {
         return null;
     }
 
@@ -331,10 +321,10 @@ public class SeleniumWebDriverImpl implements WebBrowser {
      * @param locator
      * @param name
      * @return
-     * @throws AutomationNextGenException
+     * @throws Exception
      */
     @Override
-    public String getAttribute(By locator, String name) throws AutomationNextGenException {
+    public String getAttribute(By locator, String name) throws Exception {
         return null;
     }
 
@@ -342,58 +332,58 @@ public class SeleniumWebDriverImpl implements WebBrowser {
      * @param webElement
      * @param name
      * @return
-     * @throws AutomationNextGenException
+     * @throws Exception
      */
     @Override
-    public String getAttribute(WebElement webElement, String name) throws AutomationNextGenException {
+    public String getAttribute(WebElement webElement, String name) throws Exception {
         return null;
     }
 
     /**
      * @param locator
      * @return
-     * @throws AutomationNextGenException
+     * @throws Exception
      */
     @Override
-    public String getTagName(By locator) throws AutomationNextGenException {
+    public String getTagName(By locator) throws Exception {
         return null;
     }
 
     /**
      * @param locator
-     * @throws AutomationNextGenException
+     * @throws Exception
      */
     @Override
-    public void scrollElementIntoView(By locator) throws AutomationNextGenException {
+    public void scrollElementIntoView(By locator) throws Exception {
 
     }
 
     /**
      * @param webElement
-     * @throws AutomationNextGenException
+     * @throws Exception
      */
     @Override
-    public void scrollElementIntoView(WebElement webElement) throws AutomationNextGenException {
+    public void scrollElementIntoView(WebElement webElement) throws Exception {
 
     }
 
     /**
      * @param locator
      * @return
-     * @throws AutomationNextGenException
+     * @throws Exception
      */
     @Override
-    public Object getDataFromListOfAvailableAttributes(By locator) throws AutomationNextGenException {
+    public Object getDataFromListOfAvailableAttributes(By locator) throws Exception {
         return null;
     }
 
     /**
      * @param webElement
      * @return
-     * @throws AutomationNextGenException
+     * @throws Exception
      */
     @Override
-    public Object getDataFromListOfAvailableAttributes(WebElement webElement) throws AutomationNextGenException {
+    public Object getDataFromListOfAvailableAttributes(WebElement webElement) throws Exception {
         return null;
     }
 
@@ -420,7 +410,7 @@ public class SeleniumWebDriverImpl implements WebBrowser {
     }
 
     @Override
-    public void openUrl(String url) throws AutomationNextGenException {
+    public void openUrl(String url) throws Exception {
         getDriver().navigate().to(url);
     }
 

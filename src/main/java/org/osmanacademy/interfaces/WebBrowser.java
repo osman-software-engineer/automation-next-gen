@@ -3,7 +3,6 @@ package org.osmanacademy.interfaces;
 import org.openqa.selenium.*;
 import org.openqa.selenium.remote.SessionId;
 import org.osmanacademy.enums.SelectAction;
-import org.osmanacademy.exceptions.AutomationNextGenException;
 
 import java.util.List;
 
@@ -12,71 +11,71 @@ import java.util.List;
  */
 public interface WebBrowser {
 
-    void openBrowser() throws AutomationNextGenException;
+    void openBrowser() throws Exception;
 
-    void minimize() throws AutomationNextGenException;
+    void minimize() throws Exception;
 
-    void maximize() throws AutomationNextGenException;
+    void maximize() throws Exception;
 
-   public SessionId getSessionID() throws AutomationNextGenException;
+   public SessionId getSessionID() throws Exception;
 
-    void openUrl(String url) throws AutomationNextGenException;
+    void openUrl(String url) throws Exception;
 
-    void refresh() throws AutomationNextGenException;
+    void refresh() throws Exception;
 
-    void openNewTab() throws AutomationNextGenException;
+    void openNewTab() throws Exception;
 
-    void switchToTabWithTitle(String title) throws AutomationNextGenException;
+    void switchToTabWithTitle(String title) throws Exception;
 
-    void goBack() throws AutomationNextGenException;
+    void goBack() throws Exception;
 
-    void goForward() throws AutomationNextGenException;
+    void goForward() throws Exception;
 
     void goToUrl(String url) throws Exception;
 
-    void click(By locator) throws AutomationNextGenException;
+    void click(By locator) throws Exception;
 
     void click(WebElement webElement);
 
-    void type(By locator, String data) throws AutomationNextGenException;
+    void type(By locator, String data) throws Exception;
 
-    void type(WebElement webElement, String data) throws AutomationNextGenException;
+    void type(WebElement webElement, String data) throws Exception;
 
-    void selectDropDown(By locator, SelectAction action, String data) throws AutomationNextGenException;
+    void selectDropDown(By locator, SelectAction action, String data) throws Exception;
 
-    public Boolean waitForPageLoad() throws AutomationNextGenException;
+    public Boolean waitForPageLoad() throws Exception;
 
-    void closeBrowser() throws AutomationNextGenException;
+    void closeBrowser() throws Exception;
 
-    public List<WebElement> getWebElements(By locator) throws AutomationNextGenException;
+    public List<WebElement> getWebElements(By locator) throws Exception;
 
-    public WebElement getWebElement(By locator) throws AutomationNextGenException;
+    public WebElement getWebElement(By locator) throws Exception;
 
-    public Boolean isElementDisplayed(By locator) throws AutomationNextGenException;
+    public Boolean isElementDisplayed(By locator) throws Exception;
 
-    public Boolean isElementDisplayed(WebElement webElement) throws AutomationNextGenException;
+    public Boolean isElementDisplayed(WebElement webElement) throws Exception;
 
-    public Boolean isElementEnabled(By locator) throws AutomationNextGenException;
+    public Boolean isElementEnabled(By locator) throws Exception;
 
-    public Boolean isElementSelected(By locator) throws AutomationNextGenException;
+    public Boolean isElementSelected(By locator) throws Exception;
 
-    public String getText(By locator) throws AutomationNextGenException;
+    public String getText(By locator) throws Exception;
 
-    public String getCssValue(By locator, String propertyName) throws AutomationNextGenException;
+    public String getCssValue(By locator, String propertyName) throws Exception;
 
-    public String getAttribute(By locator, String name) throws AutomationNextGenException;
+    public String getAttribute(By locator, String name) throws Exception;
 
-    public String getAttribute(WebElement webElement, String name) throws AutomationNextGenException;
+    public String getAttribute(WebElement webElement, String name) throws Exception;
 
-    public String getTagName(By locator) throws AutomationNextGenException;
+    public String getTagName(By locator) throws Exception;
 
-    public void scrollElementIntoView(By locator) throws AutomationNextGenException;
+    public void scrollElementIntoView(By locator) throws Exception;
 
-    public void scrollElementIntoView(WebElement webElement) throws AutomationNextGenException;
+    public void scrollElementIntoView(WebElement webElement) throws Exception;
 
 
-    public Object getDataFromListOfAvailableAttributes(By locator) throws AutomationNextGenException;
+    public Object getDataFromListOfAvailableAttributes(By locator) throws Exception;
 
-    public Object getDataFromListOfAvailableAttributes(WebElement webElement) throws AutomationNextGenException;
+    public Object getDataFromListOfAvailableAttributes(WebElement webElement) throws Exception;
 
 }

@@ -29,7 +29,7 @@ public class WebElementManager{
     }
 
 
-    public WebElement getWebElementFromDOM(By locator) throws AutomationNextGenException {
+    public WebElement getWebElementFromDOM(By locator) throws Exception {
         try {
             if (locator == null) {
                 throw new AutomationNextGenException("Element From UI is Null");
@@ -38,13 +38,13 @@ public class WebElementManager{
                 return getWebElementFromMemory();
             }
         } catch (Exception e) {
-            throw new AutomationNextGenException(e.getMessage());
+            throw new Exception(e.getMessage());
         }
 
     }
 
 
-    public List<WebElement> getWebElements(By elementFromUi) throws AutomationNextGenException {
+    public List<WebElement> getWebElements(By elementFromUi) throws Exception {
         try {
             if (elementFromUi == null) {
                 throw new AutomationNextGenException("Element From UI is Null");
@@ -53,8 +53,7 @@ public class WebElementManager{
                 return getWebElements();
             }
         } catch (Exception e) {
-            e.printStackTrace();
-            throw new AutomationNextGenException(e.getMessage());
+            throw new Exception(e);
         }
 
     }
@@ -78,7 +77,7 @@ public class WebElementManager{
                 throw new AutomationNextGenException("Element From UI is Null");
             }
             return elementFromUi.isDisplayed();
-        } catch (Exception e) {
+        } catch (AutomationNextGenException e) {
             return false;
         }
     }
@@ -110,12 +109,9 @@ public class WebElementManager{
     }
 
 
-    public String getText(By elementFromUi) throws AutomationNextGenException {
-        try {
+    public String getText(By elementFromUi) throws Exception {
             return getWebElementFromDOM(elementFromUi).getText().trim();
-        } catch (Exception e) {
-            throw new AutomationNextGenException(e.getMessage());
-        }
+
     }
 
 
@@ -158,11 +154,7 @@ public class WebElementManager{
     }
 
     public String getAttribute(WebElement elementFromUi, String name) throws AutomationNextGenException {
-        try {
-            return elementFromUi.getAttribute(name);
-        } catch (Exception e) {
-            throw new AutomationNextGenException(e.getMessage());
-        }
+        return elementFromUi.getAttribute(name);
     }
 
     public String getTagName(By elementFromUi) throws AutomationNextGenException {
@@ -182,12 +174,8 @@ public class WebElementManager{
         }
     }
 
-    public void scrollElementIntoView(WebElement elementFromUi) throws AutomationNextGenException {
-        try {
-            getJavaScriptExecutor().executeScript("arguments[0].scrollIntoView(true);", elementFromUi);
-        } catch (Exception e) {
-            throw new AutomationNextGenException(e.getMessage());
-        }
+    public void scrollElementIntoView(WebElement elementFromUi) {
+        getJavaScriptExecutor().executeScript("arguments[0].scrollIntoView(true);", elementFromUi);
     }
 
     public Object getDataFromListOfAvailableAttributes(By elementFromUi) throws AutomationNextGenException {
@@ -202,14 +190,10 @@ public class WebElementManager{
     }
 
     public Object getDataFromListOfAvailableAttributes(WebElement elementFromUi) throws AutomationNextGenException {
-        try {
-            setElement(elementFromUi);
-            return getJavaScriptExecutor().executeScript(
-                    "var items = {}; for (index = 0; index < arguments[0].attributes.length; ++index) { items[arguments[0].attributes[index].name] = arguments[0].attributes[index].value }; return items;",
-                    getWebElementFromMemory());
-        } catch (Exception e) {
-            throw new AutomationNextGenException(e.getMessage());
-        }
+        setElement(elementFromUi);
+        return getJavaScriptExecutor().executeScript(
+                "var items = {}; for (index = 0; index < arguments[0].attributes.length; ++index) { items[arguments[0].attributes[index].name] = arguments[0].attributes[index].value }; return items;",
+                getWebElementFromMemory());
     }
     public WebDriver getDriver() {
         return driver;

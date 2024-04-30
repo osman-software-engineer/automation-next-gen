@@ -1,10 +1,18 @@
 package org.osmanacademy.listeners;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.testng.ITestContext;
 import org.testng.ITestListener;
 import org.testng.ITestResult;
 
+import java.io.PrintStream;
+import java.io.PrintWriter;
+import java.io.StringWriter;
+
 public class WebTestListener implements ITestListener {
+
+    private static final Logger logger = LoggerFactory.getLogger(WebTestListener.class);
     /**
      * Invoked each time before a test will be invoked. The <code>ITestResult</code> is only partially
      * filled with the references to class, method, start millis and status.
@@ -14,7 +22,10 @@ public class WebTestListener implements ITestListener {
      */
     @Override
     public void onTestStart(ITestResult result) {
-        ITestListener.super.onTestStart(result);
+        String testName = getFormattedTestName(result);
+        logger.info("#############################################################");
+        logger.info(STR."# \{testName} Status: Started");
+        logger.info("#############################################################");
     }
 
     /**
@@ -25,7 +36,17 @@ public class WebTestListener implements ITestListener {
      */
     @Override
     public void onTestSuccess(ITestResult result) {
-        ITestListener.super.onTestSuccess(result);
+        String testName = getFormattedTestName(result);
+        logger.info("#############################################################");
+        logger.info(STR."\{testName} Status: Passed");
+        logger.info("#############################################################");
+    }
+
+    private static String getFormattedTestName(ITestResult result) {
+        ITestContext context = result.getTestContext();
+        String testName = result.getMethod().getMethodName();
+        testName = Character.toUpperCase(testName.charAt(0)) + testName.substring(1);
+        return testName;
     }
 
     /**
@@ -36,7 +57,17 @@ public class WebTestListener implements ITestListener {
      */
     @Override
     public void onTestFailure(ITestResult result) {
-        ITestListener.super.onTestFailure(result);
+        String testName = getFormattedTestName(result);
+        logger.info("#############################################################");
+        logger.info(STR."\{testName} Status: Failed");
+        logger.info("#############################################################");
+        Exception e = (Exception) result.getTestContext().getAttribute("Exception");
+        StringWriter sw = new StringWriter();
+        e.printStackTrace(new PrintWriter(sw));
+        String exceptionAsString = sw.toString();
+        logger.error(exceptionAsString);
+
+
     }
 
     /**

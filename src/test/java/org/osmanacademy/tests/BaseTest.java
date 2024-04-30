@@ -1,19 +1,22 @@
 package org.osmanacademy.tests;
 
 import org.osmanacademy.AutomationNextGen;
-import org.osmanacademy.exceptions.AutomationNextGenException;
 import org.osmanacademy.implementations.AutomationNextGenImpl;
-import org.testng.annotations.AfterSuite;
-import org.testng.annotations.AfterTest;
-import org.testng.annotations.BeforeSuite;
-import org.testng.annotations.BeforeTest;
+import org.osmanacademy.listeners.WebSuiteListener;
+import org.osmanacademy.listeners.WebTestListener;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.testng.annotations.*;
 import org.testng.asserts.SoftAssert;
 
 /**
  * The BaseTestSmoke class represents the base test class for smoke tests. It provides methods for setting up and tearing down test environments, as well as accessing the web browser
  * and website URL.
  */
+@Listeners({WebTestListener.class,WebSuiteListener.class})
 public class BaseTest {
+
+    public static final Logger logger = LoggerFactory.getLogger(BaseTest.class);
 
     private AutomationNextGen automationNextGen;
 
@@ -34,7 +37,7 @@ public class BaseTest {
     }
 
     @AfterTest
-    public void tearDown() throws AutomationNextGenException {
+    public void tearDown() throws Exception {
         getAutomationNextGen().getWebBrowser().closeBrowser();
     }
     @AfterSuite

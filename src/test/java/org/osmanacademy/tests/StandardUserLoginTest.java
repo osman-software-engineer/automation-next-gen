@@ -3,14 +3,18 @@ package org.osmanacademy.tests;
 import org.osmanacademy.dataobjects.LoginPageData;
 import org.osmanacademy.exceptions.AutomationNextGenException;
 import org.osmanacademy.pageactions.LoginPageAction;
+import org.osmanacademy.pageobjects.LoginPageObject;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.testng.ITestContext;
 import org.testng.annotations.Test;
 
 public class StandardUserLoginTest extends BaseTest {
 
+    private static final Logger logger = LoggerFactory.getLogger(LoginPageObject.class);
 
     @Test
-    public void test(ITestContext context) throws AutomationNextGenException {
+    public void standardUserLoginTest(ITestContext context) throws AutomationNextGenException {
         try {
             //Launch Web Application
             getAutomationNextGen().getWebBrowser().openBrowser();
@@ -23,12 +27,15 @@ public class StandardUserLoginTest extends BaseTest {
             LoginPageData loginPageData = new LoginPageData();
             loginPageData.setUsername(getAutomationNextGen().getCredentials().getStandardUser().getUserName());
             loginPageData.setPassword(getAutomationNextGen().getCredentials().getStandardUser().getPassword());
+
             // Perform Login Functionality
             LoginPageAction loginPageAction = new LoginPageAction(loginPageData,getAutomationNextGen());
-            loginPageAction.functionalityLogin();
-        } catch (AutomationNextGenException e) {
+            loginPageAction.performLogin();
+
+        } catch (Exception e) {
+            getSoftAssert().assertNull(e, STR."Expected no exception, but found: \{e}");
+            context.setAttribute("Exception",e);
             getSoftAssert().assertAll();
-            throw new RuntimeException(e);
         }
 
     }

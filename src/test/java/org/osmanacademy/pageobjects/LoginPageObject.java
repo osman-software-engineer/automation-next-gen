@@ -11,24 +11,22 @@ import org.slf4j.LoggerFactory;
 public class LoginPageObject {
 
     private static final Logger logger = LoggerFactory.getLogger(LoginPageObject.class);
-
-    private String pageTitle;
-
     private final ThreadLocal<AutomationNextGen> automationNextGen = new ThreadLocal<AutomationNextGen>();
+    By textFieldUsername = By.id("user-name");
+    By textFieldPassword = By.id("password");
+    By buttonLogin = By.id("login-button");
+    private String pageTitle;
 
     public LoginPageObject(AutomationNextGen automationNextGen) {
         this.automationNextGen.set(automationNextGen);
     }
-    By textFieldUsername = By.id("user-name");
-    By textFieldPassword = By.id("password");
-    By buttonLogin = By.id("login-button");
 
-    @Step("Enter Username ::: {0}")
+
     public void enterUsername(String username) throws AutomationNextGenException {
         try {
             this.automationNextGen.get().getWebBrowser().type(this.textFieldUsername, username);
-        } catch (AutomationNextGenException e) {
-            throw new AutomationNextGenException("Couldn't able to Enter Username ::: %s".formatted(e.getMessage()));
+        } catch (Exception e) {
+            throw new AutomationNextGenException("Couldn't able to Enter Username: " ,e);
         }
 
     }
@@ -36,9 +34,9 @@ public class LoginPageObject {
     @Step("Enter Password ::: {0}")
     public void enterPassword(String password) throws AutomationNextGenException {
         try {
-            this.automationNextGen.get().getWebBrowser().type(this.textFieldPassword,password);
-        } catch (AutomationNextGenException e) {
-            throw new AutomationNextGenException("Couldn't able to Enter Password ::: " + e.getMessage());
+            this.automationNextGen.get().getWebBrowser().type(this.textFieldPassword, password);
+        } catch (Exception e) {
+            throw new AutomationNextGenException("Couldn't able to Enter Password: " + e.getMessage());
         }
     }
 
@@ -47,7 +45,7 @@ public class LoginPageObject {
     public void clickOnLoginButton() throws AutomationNextGenException {
         try {
             this.automationNextGen.get().getWebBrowser().click(this.buttonLogin);
-        } catch (AutomationNextGenException e) {
+        } catch (Exception e) {
             throw new AutomationNextGenException("Couldn't able to Click Login Button ::: " + e.getMessage());
         }
     }
