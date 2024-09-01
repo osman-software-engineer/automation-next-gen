@@ -2,6 +2,7 @@ package org.osmanacademy.tests;
 
 import org.osmanacademy.AutomationNextGen;
 import org.osmanacademy.implementations.AutomationNextGenImpl;
+import org.osmanacademy.pageobjects.LoginPageObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.testng.ITestContext;
@@ -35,6 +36,12 @@ public class StandardUserLoginTest extends BaseTest {
 
             //Set Web Driver to TestNG context
             context.setAttribute("AutomationNextGen", getAutomationNextGen());
+
+            LoginPageObject loginPageObject = new LoginPageObject(getAutomationNextGen());
+
+            loginPageObject.enterUsername(getAutomationNextGen().getCredentials().getStandardUser().getUserName());
+            loginPageObject.enterPassword(getAutomationNextGen().getCredentials().getStandardUser().getPassword());
+            loginPageObject.clickLoginButton();
 
         } catch (Exception e) {
             getSoftAssert().assertNull("");
