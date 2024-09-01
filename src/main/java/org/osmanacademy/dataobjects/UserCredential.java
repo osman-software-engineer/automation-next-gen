@@ -3,7 +3,6 @@ package org.osmanacademy.dataobjects;
 import java.util.Objects;
 
 public class UserCredential{
-
     private String userName;
     private String password;
 
@@ -29,8 +28,7 @@ public class UserCredential{
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        UserCredential that = (UserCredential) o;
+        if (!(o instanceof UserCredential that)) return false;
         return Objects.equals(getUserName(), that.getUserName()) && Objects.equals(getPassword(), that.getPassword());
     }
 

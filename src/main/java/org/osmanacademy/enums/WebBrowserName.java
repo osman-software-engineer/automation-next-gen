@@ -5,7 +5,7 @@ public enum WebBrowserName {
     FIREFOX("firefox"),
     EDGE("edge");
 
-    private String value;
+    private final String value;
 
     WebBrowserName(String value) {
         this.value = value;

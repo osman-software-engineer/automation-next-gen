@@ -1,7 +1,6 @@
 package org.osmanacademy.implementations;
 
 import org.osmanacademy.AutomationNextGen;
-import org.osmanacademy.enums.Environment;
 import org.osmanacademy.interfaces.*;
 
 public class AutomationNextGenImpl implements AutomationNextGen {
@@ -10,14 +9,14 @@ public class AutomationNextGenImpl implements AutomationNextGen {
     private WebBrowser webBrowser;
     private TestDataGenerator testDataGenerator;
     private Database database;
-    private TestExecutionEnvironment environment;
-    private Credentials credentials;
+    private TestEnvironment testEnvironment;
+    private UserCredentials userCredentials;
     public AutomationNextGenImpl() {
-        setWebBrowser(new SeleniumWebDriverImpl("web-browser-automation.properties"));
+        setTestEnvironment(new TestEnvironmentImpl());
+        setWebBrowser(new PlaywrightImpl());
         setTestDataGenerator(new TestDataAutomationImpl());
         setDatabase(new DatabaseImpl());
-        setCredentials(new CredentialsImpl());
-        setEnvironment(new TestExecutionEnvironmentImpl());
+        setCredentials(new UserCredentialsImpl());
 
     }
 
@@ -49,16 +48,16 @@ public class AutomationNextGenImpl implements AutomationNextGen {
      * @return
      */
     @Override
-    public Credentials getCredentials() {
-        return this.credentials;
+    public UserCredentials getCredentials() {
+        return this.userCredentials;
     }
 
     /**
      * @return
      */
     @Override
-    public TestExecutionEnvironment getEnvironment() {
-        return this.environment;
+    public TestEnvironment getTestEnvironment() {
+        return this.testEnvironment;
     }
 
     public void setWebBrowser(WebBrowser webBrowser) {
@@ -73,12 +72,12 @@ public class AutomationNextGenImpl implements AutomationNextGen {
         this.database = database;
     }
 
-    public void setCredentials(Credentials credentials) {
-        this.credentials = credentials;
+    public void setCredentials(UserCredentials userCredentials) {
+        this.userCredentials = userCredentials;
     }
 
-    public void setEnvironment(TestExecutionEnvironment environment) {
-        this.environment = environment;
+    public void setTestEnvironment(TestEnvironment testEnvironment) {
+        this.testEnvironment = testEnvironment;
     }
 
 }

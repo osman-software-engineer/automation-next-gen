@@ -1,7 +1,6 @@
 package org.osmanacademy.implementations;
 
 import com.github.javafaker.Faker;
-
 import org.osmanacademy.common.DateFormat;
 import org.osmanacademy.interfaces.TestDataGenerator;
 

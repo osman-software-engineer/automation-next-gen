@@ -3,14 +3,15 @@ package org.osmanacademy;
 import org.osmanacademy.interfaces.*;
 
 public interface AutomationNextGen {
-    WebBrowser getWebBrowser();
+    TestEnvironment getTestEnvironment();
 
     TestDataGenerator getTestDataGenerator();
 
+    WebBrowser getWebBrowser();
+
     Database getDatabase();
 
-    Credentials getCredentials();
+    UserCredentials getCredentials();
 
-    TestExecutionEnvironment getEnvironment();
 
 }
